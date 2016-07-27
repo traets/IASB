@@ -39,8 +39,8 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
     #Progress bar
     pb <- txtProgressBar(min = 0, max = nrow(des), style = 3)
 
-    #set round design
-    round_des<-des
+    #set iteration start design
+    iter_des<-des
 
     for (trow in 1:nrow(des)){
 
@@ -72,7 +72,7 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
       if (change){
         des[trow, ] <- best_row
       }else{
-        des[trow, ] <- round_des[trow, ]
+        des[trow, ] <- iter_des[trow, ]
       }
 
       change<-F
@@ -80,7 +80,7 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
 
     #Changes after loop through whole design
     close(pb)
-    converge<-isTRUE(all.equal(des, round_des))
+    converge<-isTRUE(all.equal(des, iter_des))
   }
 
   return(list(des, DB))
