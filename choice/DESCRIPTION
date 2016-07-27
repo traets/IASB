@@ -3,10 +3,11 @@ Type: Package
 Title: Efficient designs for discrete choice experiments.
 Version: 0.1.0
 Authors@R: person("Frits", "Traets", email = "first.traets@kuleuven.com", role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
+Description: Generates efficient sequential designs for discrete choice experiments using Bayesian updating.
 License: What license is it under?
 LazyData: TRUE
 Imports:
     dplyr,
     maxLik
 RoxygenNote: 5.0.1
+URL: https://github.com/traets/choice

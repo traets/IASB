@@ -9,8 +9,9 @@
 #' @param design A design matrix in which each row is a profile.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param Y A binary response vector.
+#' @return A list containing samples and their associated weights, which together represent the posterior distribution.
 #' @export
-imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y){
+imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
 
   #cte
   prior1<-(2*pi)^(-length(mode)/2)*(det(prior_covar))^(-0.5)
@@ -23,11 +24,11 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y){
     p<-t(t(des) * par)
     p<-.rowSums(p, m= nrow(des), n=length(par))
     expp<-exp(p)
-    p<-expp/rep(rowsum(expp,rep(seq(1, nrow(des)/n_alts, 1), each = n_alts)), each=n_alts)
+    p<-expp/rep(rowsum(expp, rep(seq(1, nrow(des)/n_alts, 1), each = n_alts)), each=n_alts)
 
     log_L<-sum(Y*log(p))
 
-    logprior2=-0.5*(par -t(prior_mode))%*%solve(prior_covar)%*%(as.matrix(par)-prior_mode)
+    logprior2=-0.5*(par -t(prior_mode))%*%solve(prior_covar)%*%(as.matrix(par) - prior_mode)
 
     logpost<-logprior1 + logprior2 + log_L
 
@@ -56,9 +57,9 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y){
   imp_mode<-maxLik::maxNR(logPost, start= prior_mode, design=des, Y=Y, n_alts=n_alts)$estimate
 
   #draws from importance density
-  H<-hessian(par = imp_mode, design = des, covar = prior_covar, n_alts = 2)
+  H<-hessian(par = imp_mode, design = des, covar = prior_covar, n_alts = n_alts)
   g_covar<--solve(H)
-  g_draws<-lattice_mvt(mode=imp_mode, cvar = g_covar, df=length(imp_mode))
+  g_draws<-lattice_mvt(mode=imp_mode, cvar = g_covar, df=length(imp_mode), ...)
 
   #likelihood function
   Lik<-function(par, design, n_alts, Y){
@@ -108,6 +109,42 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y){
   w<-w/sum(w)
 
   return(list(g_draws,w))
+}
+
+#' modes
+#'
+#' This functions returns a vector with the posterior modes,
+#' given samples from the posterior and their weights (importance sampling).
+#' @param samples Matrix with samples coming from the posterior distribution. Each row is a sample.
+#' @param weights Vector containing the weights of the samples.
+#' @return The mode of the posterior distribution.
+#' @export
+modes<-function(samples, weights, s){
+
+  mode<-numeric(ncol(samples))
+
+  for (i in 1:ncol(samples)){
+
+    ### posterior probability
+    #mean weight intervals
+    h<-hist(sam[ ,i], breaks = nrow(samples)/s)
+    group_fac<-factor(rep(1:(length(h$breaks)-1), h$counts))
+    w_groups<-split(w, group_fac)
+    mean_weight<-unlist(lapply(w_groups, mean))
+
+    #posterior= mean weights * frequency
+    freq<-h$counts[h$counts != 0]
+    int_mids<-h$mids[h$counts != 0]
+    pos<-freq*mean_weight/sum(freq*mean_weight)
+    d<-as.data.frame(cbind(int_mids,pos))
+
+    d<-d[with(d, order(-pos)), ]
+    mode[i]<-d$int_mids[1]
+
+  }
+
+  return(mode)
+
 }
 
 
