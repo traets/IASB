@@ -4,14 +4,14 @@
 \alias{design}
 \title{Design generation}
 \usage{
-design(profiles, n_sets, n_alts)
+design(lvls, n_sets, n_alts, intercept = FALSE, contr = "contr.sum")
 }
 \arguments{
-\item{profiles}{Matrix containing (all) possible profiles.}
-
 \item{n_sets}{Numeric value indicating the number of choide sets.}
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
+
+\item{profiles}{Matrix containing (all) possible profiles.}
 }
 \value{
 A design matrix

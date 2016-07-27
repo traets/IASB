@@ -4,7 +4,7 @@
 \alias{lattice}
 \title{Lattice standard normal generation.}
 \usage{
-lattice(K, b = 2, m = 9)
+lattice(K, b = 2, m = 10)
 }
 \arguments{
 \item{K}{Numeric value indicating the dimensionality of the grid.}

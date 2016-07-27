@@ -57,7 +57,7 @@ info_design<-function (par, design, n_alts){
 
   p<- des %*% diag(par)
   p<-.rowSums(p, m= nrow(des), n=length(par))
-  p<-exp(p)/rep(rowsum(exp(p), group), each=2)
+  p<-exp(p)/rep(rowsum(exp(p), group), each=n_alts)
 
   info_design<- crossprod(des*p, des) - crossprod(rowsum( des*p, group))
 }

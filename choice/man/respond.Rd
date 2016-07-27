@@ -15,6 +15,6 @@ respond(par, design, n_alts)
 Vector with binary responses.
 }
 \description{
-Function to generate responses given parameter values and a design matrix.
+Function to generate responses given parameter values and a design matrix. Chooses the alternative with max probability.
 }
 

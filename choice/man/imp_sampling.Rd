@@ -4,7 +4,7 @@
 \alias{imp_sampling}
 \title{Importance sampling}
 \usage{
-imp_sampling(prior_mode, prior_covar, design, n_alts, Y)
+imp_sampling(prior_mode, prior_covar, design, n_alts, Y, ...)
 }
 \arguments{
 \item{prior_mode}{Vector containing the mode of the multivariate normal distribution which is the prior.}
@@ -16,6 +16,9 @@ imp_sampling(prior_mode, prior_covar, design, n_alts, Y)
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
 \item{Y}{A binary response vector.}
+}
+\value{
+A list containing samples and their associated weights, which together represent the posterior distribution.
 }
 \description{
 This functions samples from an imortance density (multivariate t-distribution),

@@ -4,7 +4,7 @@
 \alias{profiles}
 \title{Profile generation}
 \usage{
-profiles(lvls, intercept = F, contr = "contr.sum")
+profiles(lvls, intercept = FALSE, contr = "contr.sum")
 }
 \arguments{
 \item{lvls}{A vector which contains for each attribute, the number of levels.}
