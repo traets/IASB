@@ -7,7 +7,7 @@
 #' @param contr See model.matrix for more information. The default is effect coded.
 #' @return A matrix containig all possible profiles.
 #' @export
-profiles<-function (lvls, intercept=F, contr='contr.sum'){
+profiles<-function (lvls, intercept=FALSE, contr='contr.sum'){
 
 
   #Make list with all atribute levels
@@ -47,10 +47,13 @@ profiles<-function (lvls, intercept=F, contr='contr.sum'){
 #' @param profiles Matrix containing (all) possible profiles.
 #' @return A design matrix
 #' @export
-design<-function (profiles, n_sets, n_alts){
+design<-function (lvls, n_sets, n_alts, intercept=FALSE, contr='contr.sum'){
 
-  R<-round(runif((n_alts*n_sets), 1, nrow(profiles)))
-  design<-profiles[R,]
+
+  profs<-profiles(lvls = lvls, contr = contr, intercept = intercept)
+
+  R<-round(runif((n_alts*n_sets), 1, nrow(profs)))
+  design<-profs[R,]
   design<-as.matrix(design)
 
   #return design
@@ -59,7 +62,7 @@ design<-function (profiles, n_sets, n_alts){
 
 #' Response generation
 #'
-#' Function to generate responses given parameter values and a design matrix.
+#' Function to generate responses given parameter values and a design matrix. Chooses the alternative with max probability.
 #' @param par Vector containing parameter values.
 #' @param design Design matrix.
 #' @return Vector with binary responses.
@@ -73,8 +76,22 @@ respond<-function (par, design, n_alts){
   expp<-exp(p)
   p<-expp/rep(rowsum(expp, rep(seq(1, nrow(d)/n_alts,1), each = n_alts)), each=n_alts)
 
-  U<-runif(length(p),0,1)
-  Y<- as.numeric(U<p)
+  if(nrow(d) > n_alts){
+
+    Y<-numeric()
+    set<-seq(1,length(p)+n_alts, n_alts)
+
+      for(i in 1:(nrow(d)/n_alts)){
+
+      temp<-rep(0, n_alts)
+      temp[which.max( p[set[i]:(set[i+1]-1)] )]<-1
+
+      Y<-c(Y,temp)
+    }
+  }else{
+    Y<-rep(0, length(p))
+    Y[which.max(p)]<-1
+  }
 
   return(Y)
 }
@@ -86,7 +103,7 @@ respond<-function (par, design, n_alts){
 #' @param b Numeric value indicating the base.
 #' @param m Numeric value. N=b^m.
 #' @return Matrix of lattice points drawn from a multivariate standard normal distribution.
-lattice <- function (K, b = 2, m = 9){
+lattice <- function (K, b = 2, m=10){
 
     base <- function(num){
 
