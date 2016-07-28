@@ -52,9 +52,11 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
         #calculate for all samples the D error.
         D_errors<-apply(par_samples, 1, d_err, design = des, n_alts = n_alts)
 
+        #warning
+        if (any(is.na(D_errors))){warning('NaN produced in DB error')}
+
         #DB error
-        DB<-mean(D_errors)
-        if (is.nan(DB)){warning('NaN produced in DB error')}
+        DB<-mean(D_errors, na.rm = TRUE)
 
         #if better --> keep
         if (DB < DB_start){
