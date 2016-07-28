@@ -54,7 +54,7 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
 
         #DB error
         DB<-mean(D_errors)
-        if (is.nan(DB)){stop('NaN produced in DB error')}
+        if (is.nan(DB)){warning('NaN produced in DB error')}
 
         #if better --> keep
         if (DB < DB_start){
