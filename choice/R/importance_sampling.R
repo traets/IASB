@@ -8,6 +8,7 @@
 #' @param prior_mode vector containing the prior mode
 #' @param prior_covar matrix containing the prior covariance
 #' @return the logposterior probability
+#' @export
 logPost<-function(par, design, Y, n_alts, prior_mode, prior_covar){
 
   des<-design
