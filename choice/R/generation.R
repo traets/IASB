@@ -47,7 +47,7 @@ profiles<-function (lvls, intercept=FALSE, contr='contr.sum'){
 #' @param profiles Matrix containing (all) possible profiles.
 #' @return A design matrix
 #' @export
-design<-function (lvls, n_sets, n_alts, intercept=FALSE, contr='contr.sum'){
+design.gen<-function (lvls, n_sets, n_alts, intercept=FALSE, contr='contr.sum'){
 
 
   profs<-profiles(lvls = lvls, contr = contr, intercept = intercept)
