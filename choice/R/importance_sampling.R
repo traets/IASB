@@ -11,7 +11,7 @@
 #' @param prior_covar matrix containing the prior covariance
 #' @return the logposterior probability
 #' @export
-logPost<-function(parameters){
+logPost<-function(parameters, prior_mode, prior_covar, design,  n_alts, Y ){
 
   p<-t(t(design) * parameters)
   p<-.rowSums(p, m= nrow(design), n=length(parameters))
