@@ -11,18 +11,18 @@
 #' @param prior_covar matrix containing the prior covariance
 #' @return the logposterior probability
 #' @export
-logPost<-function(parameters, prior_mode= prior_mode, prior_covar= prior_covar, design=design,  n_alts=n_alts, Y=Y ){
+logPost<-function(parameters, p_m= prior_mode, p_c= prior_covar, d=design,  n_a=n_alts, YY=Y ){
 
-  p<-t(t(design) * parameters)
-  p<-.rowSums(p, m= nrow(design), n=length(parameters))
+  p<-t(t(d) * parameters)
+  p<-.rowSums(p, m= nrow(d), n=length(parameters))
   expp<-exp(p)
-  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(design)/n_alts, 1), each = n_alts)), each=n_alts)
+  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(d)/n_a, 1), each = n_a)), each=n_a)
 
-  log_L<-sum(Y*log(p))
+  log_L<-sum(YY*log(p))
 
-  logprior2=-0.5*(parameters -t(prior_mode))%*%solve(prior_covar)%*%(as.matrix(parameters) - prior_mode)
+  logprior2=-0.5*(parameters -t(p_m))%*%solve(p_c)%*%(as.matrix(parameters) - p_m)
 
-  logpost<-(length(prior_mode)/2*log(2*pi)-0.5*log(det(prior_covar))) + logprior2 + log_L
+  logpost<-(length(p_m)/2*log(2*pi)-0.5*log(det(p_c))) + logprior2 + log_L
 
   return(logpost)
 
