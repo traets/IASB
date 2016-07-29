@@ -1,3 +1,5 @@
+
+
 #' log Posterior
 #'
 #' Calculates the logposterior with a normal prior density
