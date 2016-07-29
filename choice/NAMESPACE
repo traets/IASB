@@ -3,7 +3,7 @@
 export(DB_mod_fed)
 export(DB_seq_fed)
 export(d_err)
-export(design)
+export(design.gen)
 export(imp_sampling)
 export(lattice_mvt)
 export(logPost)
