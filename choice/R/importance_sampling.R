@@ -11,18 +11,18 @@
 #' @param prior_covar matrix containing the prior covariance
 #' @return the logposterior probability
 #' @export
-logPost<-function(parameters, p_m= prior_mode, p_c= prior_covar, d=design,  n_a=n_alts, YY=Y ){
+logPost<-function(parameters, prior_mode, prior_covar, design,  n_alts, Y ){
 
-  p<-t(t(d) * parameters)
-  p<-.rowSums(p, m= nrow(d), n=length(parameters))
+  p<-t(t(design) * parameters)
+  p<-.rowSums(p, m= nrow(design), n=length(parameters))
   expp<-exp(p)
-  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(d)/n_a, 1), each = n_a)), each=n_a)
+  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(design)/n_alts, 1), each = n_alts)), each=n_alts)
 
-  log_L<-sum(YY*log(p))
+  log_L<-sum(Y*log(p))
 
-  logprior2=-0.5*(parameters -t(p_m))%*%solve(p_c)%*%(as.matrix(parameters) - p_m)
+  logprior2=-0.5*(parameters -t(prior_mode))%*%solve(prior_covar)%*%(as.matrix(parameters) - prior_mode)
 
-  logpost<-(length(p_m)/2*log(2*pi)-0.5*log(det(p_c))) + logprior2 + log_L
+  logpost<-(length(prior_mode)/2*log(2*pi)-0.5*log(det(prior_covar))) + logprior2 + log_L
 
   return(logpost)
 
@@ -91,7 +91,8 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
   prior1<-(2*pi)^(-length(mode)/2)*(det(prior_covar))^(-0.5)
 
   #estimate importance mode
-  imp_mode<-maxLik::maxNR(logPost, start= prior_mode, design=des, Y=Y, n_alts=n_alts)$estimate
+  imp_mode<-maxLik::maxNR(logPost, start= prior_mode, prior_mode=prior_mode, prior_covar= prior_covar,
+                          design=des, Y=Y, n_alts=n_alts)$estimate
 
   #draws from importance density
   H<-hessian(par = imp_mode, design = des, covar = prior_covar, n_alts = n_alts)
