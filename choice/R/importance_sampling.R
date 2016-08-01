@@ -73,6 +73,24 @@ Lik<-function(par, design, n_alts, Y){
 
 }
 
+
+#' Density multivariate t-distribution
+#'
+#' @param par vector with parametervalues.
+#' @param g_mode vector containing the mode of the multivariate t-distribution.
+#' @param g_covar covariance matrix of the multivariate t-distribution.
+#' @return density
+g_dens<-function (par, g_mode, g_covar, df=length(imp_mode)){
+
+  n<-length(par)
+  dif<-g_mode-par
+  invcov<-solve(g_covar)
+  differ<-as.numeric(t(dif)%*% invcov %*% dif)
+
+  iMVSTd=1/(det(g_covar)^(0.5))*(1+((1/df)*differ))^(-(df+length(par))/2)
+}
+
+
 #' Importance sampling
 #'
 #' This functions samples from an imortance density (multivariate t-distribution),
@@ -98,17 +116,6 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
   H<-hessian(par = imp_mode, design = des, covar = prior_covar, n_alts = n_alts)
   g_covar<--solve(H)
   g_draws<-lattice_mvt(mode=imp_mode, cvar = g_covar, df=length(imp_mode), ...)
-
-  #importance density
-  g_dens<-function (par, g_mode, g_covar, df=length(imp_mode)){
-
-    n<-length(par)
-    dif<-g_mode-par
-    invcov<-solve(g_covar)
-    differ<-as.numeric(t(dif)%*% invcov %*% dif)
-
-    iMVSTd=1/(det(g_covar)^(0.5))*(1+((1/df)*differ))^(-(df+length(par))/2)
-  }
 
   #vectors
   prior=LK=dens_g=weights<- numeric(nrow(g_draws))
