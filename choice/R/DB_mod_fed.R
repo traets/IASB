@@ -16,7 +16,7 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
 
   #Generation
   profiles<- profiles(lvls, ...)
-  des<- design(lvls = lvls, n_sets, n_alts)
+  des<- design.gen(lvls = lvls, n_sets, n_alts)
 
   #check
   if(ncol(des)!= ncol(par_samples)){
