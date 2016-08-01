@@ -80,8 +80,9 @@ Lik<-function(par, design, n_alts, Y){
 #' @param g_mode vector containing the mode of the multivariate t-distribution.
 #' @param g_covar covariance matrix of the multivariate t-distribution.
 #' @return density
-g_dens<-function (par, g_mode, g_covar, df=length(imp_mode)){
+g_dens<-function (par, g_mode, g_covar){
 
+  df=length(g_mode)
   n<-length(par)
   dif<-g_mode-par
   invcov<-solve(g_covar)
