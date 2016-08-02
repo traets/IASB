@@ -136,7 +136,7 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
   w<-LK*prior/dens_g
   w<-w/sum(w)
 
-  return(list(g_draws,w))
+  return(list(g_draws, w, prior_mode, g_covar))
 }
 
 #' modes
