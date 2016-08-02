@@ -21,14 +21,13 @@ present<-function (design, lvl_names, levels, n_alts){
 
   for (col in 1:n_att){
     x<-as.matrix(design[, seq(begin[col], end[col], 1)])
-    uniquecombs(x)
     mat[,col]<- attr(uniquecombs(x),"index")
    }
 
   fac_des<-as.matrix(mat)
 
   for (i in 1:ncol(fac_des)){
-    fac_des[ ,i]<-mapvalues(fac_des[,i], from = unique(fac_des[,i]),
+    fac_des[ ,i]<-mapvalues(fac_des[,i], from = sort(unique(fac_des[,i])),
                             to = lvl_names[[i]][1:max(as.numeric(fac_des[,i]))])
     fac_des<-as.data.frame(fac_des)
   }
