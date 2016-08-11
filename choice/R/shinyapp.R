@@ -95,7 +95,7 @@ map_resp<-function(resp, resp_options, n_alts, neutral=T){
 #' @export
 savedrop <- function(d, Y, dir, filename) {
 
-  data<-rbind(d, Y)
+  data<-cbind(d, Y)
   fileName <- sprintf("%s.csv", filename )
   filePath <- file.path(tempdir(), fileName)
   write.csv(data, filePath, row.names = FALSE, quote = TRUE)
