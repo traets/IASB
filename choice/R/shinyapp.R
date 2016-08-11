@@ -93,10 +93,10 @@ map_resp<-function(resp, resp_options, n_alts, neutral=T){
 #' @param d Matrix containing the design.
 #' @param Y A response vector.
 #' @export
-savedrop <- function(d, Y, dir) {
+savedrop <- function(d, Y, dir, filename) {
 
   data<-rbind(d, Y)
-  fileName <- sprintf("%s_%s.csv", "7s","2alt_3.3.3" )
+  fileName <- sprintf("%s.csv", filename )
   filePath <- file.path(tempdir(), fileName)
   write.csv(data, filePath, row.names = FALSE, quote = TRUE)
 
