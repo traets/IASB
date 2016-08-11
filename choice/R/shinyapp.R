@@ -70,5 +70,40 @@ map_resp<-function(resp, resp_options, n_alts, neutral=T){
   return(v)
 }
 
+#' Load from dropbox
+#'
+#' Load design from dropbox map
+#'@param inputDir A dropbox directory that contains the design.
+#'@return the file in that directory (or concatenated files).
+#'@export
+ loaddrop <- function(dir) {
+
+  filesInfo <- drop_dir(dir)
+  filePaths <- filesInfo$path
+  data <- lapply(filePaths, drop_read_csv, stringsAsFactors = FALSE)
+  # Concatenate all data together into one data frame
+  data <- do.call(rbind, data)
+  return(data)
+}
+
+
+#' Save to dropbox
+#'
+#' Save design and responses to dropbox map
+#' @param d Matrix containing the design.
+#' @param Y A response vector.
+#' @export
+savedrop <- function(d, Y, dir) {
+
+  data<-rbind(d, Y)
+  fileName <- sprintf("%s_%s.csv", "7s","2alt_3.3.3" )
+  filePath <- file.path(tempdir(), fileName)
+  write.csv(data, filePath, row.names = FALSE, quote = TRUE)
+
+  drop_upload(filePath, dest = dir)
+}
+
+
+
 
 
