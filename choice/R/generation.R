@@ -190,6 +190,7 @@ lattice_mvt<- function (mode, cvar, df, ...){
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @return Matrix with all possible combinations of profiles.
+#' @export
 full_sets<- function(cand, n_alts, intercept= F, contr='contr.sum'){
 
   fun<-function(x){return(1:x)}
@@ -202,5 +203,6 @@ full_sets<- function(cand, n_alts, intercept= F, contr='contr.sum'){
 
   return (sets)
 }
+
 
 
