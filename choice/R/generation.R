@@ -205,4 +205,3 @@ full_sets<- function(cand, n_alts, intercept= F, contr='contr.sum'){
 }
 
 
-
