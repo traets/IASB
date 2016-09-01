@@ -72,6 +72,7 @@ info_design<-function (par, design, n_alts){
 #' @param par_samples A matrix in which each row is a sample from a multivariate prior parameter distribution.
 #' @param weights A vector containing the weights of all the samples.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
+#' @return The most efficient choice set, based on the KL information criterion.
 #' @export
 KL_info<- function (lvls, par_samples, weights, n_alts){
 
