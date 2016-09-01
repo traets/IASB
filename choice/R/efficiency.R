@@ -65,9 +65,7 @@ info_design<-function (par, design, n_alts){
 
 #' Kullback-Leibler information criterion
 #'
-#' Calcultates the most effecient choice set by maximizing the Kullback-Leibler
-#' distance between the current posterior of the coefficients, and the updated posterior
-#' one would obtain by receiving a response on the next choice set.
+#' Calcultates the most effecient choice set by maximizing the Kullback-Leibler distance.
 #' @param lvls  A vector which contains for each attribute, the number of levels.
 #' @param par_samples A matrix in which each row is a sample from a multivariate prior parameter distribution.
 #' @param weights A vector containing the weights of all the samples.
@@ -116,7 +114,6 @@ KL_info<- function (lvls, par_samples, weights, n_alts){
 
   return (new_set)
 }
-
 
 
 
