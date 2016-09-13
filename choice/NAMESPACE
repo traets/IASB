@@ -3,6 +3,7 @@
 export(DB_mod_fed)
 export(DB_seq_fed)
 export(KL_info)
+export(KL_select)
 export(d_err)
 export(design.gen)
 export(full_sets)
