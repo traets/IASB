@@ -133,3 +133,100 @@ DB_seq_fed <-function(design, lvls, n_alts, par_samples, weights, prior_covar, .
   return(final_set)
 
 }
+
+#' KL information
+#'
+#' Calculates the Kullback-Leibler divergence for a choice set, given parameter values.
+#' @param Matrix in which each row is an alternative of the choice set.
+#' @param par_samples A matrix in which each row is a sample.
+#' @param weights A vector containing the weights of all the samples.
+#' @return The Kullback-Leibler divergence
+KL <- function (set, par_samples, weights){
+
+  #probability
+  num<-set%*%t(par_samples)
+  mmat<-as.matrix(t(apply(num[, 1:ncol(num)], 2, max)))
+  nummax<-exp(sweep(num, MARGIN=2, mmat, FUN="-"))
+  denom<-colSums(nummax)
+
+  probs<-sweep(nummax, MARGIN=2, denom, FUN="/")
+
+  probs
+  logprobs<-log(probs)
+
+  wprob<- sweep(probs, MARGIN=2, weights, FUN="*")
+  totwprob<- rowSums(wprob)
+
+  logwprob<- sweep(logprobs, MARGIN=2, weights, FUN="*")
+  totlogwprob<- rowSums(logwprob)
+
+  #kullback Leibler information
+  klinfo<- 0
+  for( a in 1:n_alts){
+    klinfo<- klinfo + (totwprob[a] * (log(totwprob[a]) - totlogwprob[a]))
+  }
+
+  return (as.numeric(klinfo))
+}
+
+
+
+#' KL set selecting
+#'
+#' Provides the set that maximizes the Kullback-Leibler divergence, given parameter values.
+#' @param lvls A vector which contains for each attribute, the number of levels.
+#' @param n_sets Numeric value indicating the number of choice sets.
+#' @param n_alts Numeric value indicating the number of alternatives per choice set.
+#' @param par_samples A matrix in which each row is a sample.
+#' @param weights A vector containing the weights of all the samples.
+#' @return The most efficient choice set
+#' @export
+KL_info <- function(lvls, n_sets, n_alts, par_samples, weights){
+
+  #All choice sets, without same profile twice
+  fp<-profiles(lvls)
+  fcomb<-full_sets(cand = fp, n_alts = n_alts)
+  rows<-apply(fcomb[, 1:ncol(fcomb)], 1, function(i) length(unique(i)) > ncol(fcomb)-1)
+  fcomb<-fcomb[rows, ]
+
+  #start value
+  kl_start <- 0
+  best_set<-0
+
+  for ( s in 1:nrow(fcomb)){
+
+    #take set
+    set<-as.matrix(fp[as.numeric(fcomb[s, ]), ])
+
+    #calculate for all sets the KLinfo.
+    klinfo<-KL(set, par_samples, weights)
+
+    #if better --> keep
+    if (klinfo > kl_start){
+      best_set<- set
+      kl_start<-klinfo
+    }
+
+    print(klinfo)
+  }
+
+
+  return(list(best_set, kl_start))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
