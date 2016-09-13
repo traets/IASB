@@ -181,7 +181,7 @@ KL <- function (set, par_samples, weights){
 #' @param weights A vector containing the weights of all the samples.
 #' @return The most efficient choice set
 #' @export
-KL_info <- function(lvls, n_sets, n_alts, par_samples, weights){
+KL_select <- function(lvls, n_sets, n_alts, par_samples, weights){
 
   #All choice sets, without same profile twice
   fp<-profiles(lvls)
