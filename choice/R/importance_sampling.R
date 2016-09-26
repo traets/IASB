@@ -110,11 +110,11 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
   prior1<-(2*pi)^(-length(mode)/2)*(det(prior_covar))^(-0.5)
 
   #estimate importance mode
-  imp_mode<-maxLik::maxNR(logPost, start= prior_mode, prior_mode=prior_mode, prior_covar= prior_covar,
-                          design=des, Y=Y, n_alts=n_alts)$estimate
+  imp_mode<-maxLik::maxNR(logPost, start= prior_mode, prior_mode = prior_mode, prior_covar= prior_covar,
+                          design = design, Y=Y, n_alts=n_alts)$estimate
 
   #draws from importance density
-  H<-hessian(par = imp_mode, design = des, covar = prior_covar, n_alts = n_alts)
+  H<-hessian(par = imp_mode, design = design, covar = prior_covar, n_alts = n_alts)
   g_covar<--solve(H)
   g_draws<-lattice_mvt(mode=imp_mode, cvar = g_covar, df=length(imp_mode), ...)
 
@@ -126,7 +126,7 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
     #prior
     prior[r]<-prior1*exp(-0.5* (g_draws[r, ]-prior_mode) %*% solve(prior_covar) %*% as.matrix(g_draws[r, ]- prior_mode))
     #likelihood
-    LK[r]<-Lik(par = g_draws[r, ], design=des, Y=Y, n_alts = n_alts)
+    LK[r]<-Lik(par = g_draws[r, ], design = design, Y=Y, n_alts = n_alts)
     #density of g
     dens_g[r]<-g_dens(par = g_draws[r, ], g_mode = imp_mode, g_covar = g_covar)
 
