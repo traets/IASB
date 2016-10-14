@@ -214,7 +214,7 @@ full_sets<- function(lvls, n_alts, mindiff, intercept= F, contr='contr.sum'){
 
   for (s in 1:nrow(fcomb)){
 
-    set <- fp[as.numeric(fcomb[s,]), ]
+    set <- cand[as.numeric(fcomb[s,]), ]
 
     for (pp in 1:length(par1)){
     ifelse((sum(abs(diff(set[ , par1[pp] :par2[pp]],1))) !=0), dif<-1, dif<-0)
