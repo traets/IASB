@@ -228,4 +228,4 @@ full_sets<- function(lvls, n_alts, mindiff, intercept= F, contr='contr.sum'){
 }
 
 
-
+#roxygen2::roxygenise()
