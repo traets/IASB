@@ -4,15 +4,17 @@
 \alias{full_sets}
 \title{All choice sets}
 \usage{
-full_sets(cand, n_alts, intercept = F, contr = "contr.sum")
+full_sets(lvls, n_alts, mindiff, intercept = F, contr = "contr.sum")
 }
 \arguments{
+\item{lvls}{A vector which contains for each attribute, the number of levels.}
+
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
-\item{lvls}{A vector which contains for each attribute, the number of levels.}
+\item{mindiff}{The minimal ammount of atrribute levels that needs to be different.}
 }
 \value{
-Matrix with all possible combinations of profiles.
+Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 }
 \description{
 Generates all possible combinations of choice sets, given all candidate profiles
