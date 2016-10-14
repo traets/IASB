@@ -12,12 +12,14 @@ full_sets(lvls, n_alts, mindiff, intercept = F, contr = "contr.sum")
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
 \item{mindiff}{The minimal ammount of atrribute levels that needs to be different.}
+
+\item{intercept}{logical value indicating whether an intercept should be present.}
 }
 \value{
 Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 }
 \description{
-Generates all possible combinations of choice sets, given all candidate profiles
-and the number of alternatives.
+Generates all possible combinations of choice sets,
+taking into account the minimum ammount of attributelevels that need to be different per choice set.
 }
 
