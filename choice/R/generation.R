@@ -185,11 +185,12 @@ lattice_mvt<- function (mode, cvar, df, ...){
 
 #' All choice sets
 #'
-#' Generates all possible combinations of choice sets, given all candidate profiles
-#' and the number of alternatives.
+#' Generates all possible combinations of choice sets,
+#' taking into account the minimum ammount of attributelevels that need to be different per choice set.
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param mindiff The minimal ammount of atrribute levels that needs to be different.
+#' @param intercept logical value indicating whether an intercept should be present.
 #' @return Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 #' @export
 full_sets<- function(lvls, n_alts, mindiff, intercept= F, contr='contr.sum'){
