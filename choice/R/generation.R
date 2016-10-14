@@ -189,19 +189,43 @@ lattice_mvt<- function (mode, cvar, df, ...){
 #' and the number of alternatives.
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
-#' @return Matrix with all possible combinations of profiles.
+#' @param mindiff The minimal ammount of atrribute levels that needs to be different.
+#' @return Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 #' @export
-full_sets<- function(cand, n_alts, intercept= F, contr='contr.sum'){
+full_sets<- function(lvls, n_alts, mindiff, intercept= F, contr='contr.sum'){
 
+  cand<-profiles(lvls = lvls)
   fun<-function(x){return(1:x)}
   N<- nrow(cand)
 
   s1<-rep(N, n_alts)
   s2<-as.list(s1)
   s3<-lapply(X = s2, fun)
-  sets<-as.data.frame(expand.grid(s3))
+  fcomb<-as.data.frame(expand.grid(s3))
 
-  return (sets)
+  parplace<-lvls-1
+  par2<-cumsum(parplace)
+  par1<-c(1,par2+1)
+  par1<-par1[-length(par1)]
+  diff<-numeric()
+  newfcomb<-numeric()
+
+
+  for (s in 1:nrow(fcomb)){
+
+    set <- fp[as.numeric(fcomb[s,]), ]
+
+    for (pp in 1:length(par1)){
+    ifelse((sum(abs(diff(set[ , par1[pp] :par2[pp]],1))) !=0), dif<-1, dif<-0)
+    diff<-c(diff,dif)
+    }
+
+    if (sum(diff) > mindiff){newfcomb<-rbind(newfcomb, fcomb[s, ])}
+    diff<-numeric(0)
+    }
+
+    return(newfcomb)
 }
+
 
 
