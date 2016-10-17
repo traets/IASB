@@ -86,9 +86,9 @@ KL_info<-function (fp, fcomb, par_samples, weights, n_alts){
     expnum<-exp(num)
     total<-rowSums(expnum)
     probs<-expnum / total
-    totwprob <- t(probs) %*% w
+    totwprob <- t(probs) %*% weights
     logprobs <- log(probs)
-    totlogwprob <- t(logprobs) %*% w
+    totlogwprob <- t(logprobs) %*% weights
 
     klinfo <- 0
 
