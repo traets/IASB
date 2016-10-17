@@ -74,7 +74,7 @@ info_design<-function (par, design, n_alts){
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @return The most efficient choice set, based on the KL information criterion.
 #' @export
-KL_1<-function (fp, fcomb, par_samples, weights, n_alts){
+KL_info<-function (fp, fcomb, par_samples, weights, n_alts){
 
   minKL <- 0
   new_set<-numeric()
