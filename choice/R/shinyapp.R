@@ -41,6 +41,62 @@ present<-function (design, lvl_names, levels, n_alts){
 
 }
 
+#' label design matrix
+#'
+#' Transforms an effect coded design matrix into the design matrix containing the real attributelevels.
+#' This design can be used to present to respondents.
+#' @param design An effect coded design matrix.
+#' @parem levels vector containing the number of levels for each attribute.
+#' @param lvl_names A list containing the values of each level of each attribute.
+#' @param n_alts Number of alternatives per choice set.
+#' @return A desing matrix with presentable attributelevels.
+#' @export
+present_Gil<-function(design, levels, lvl_names, n_alts){
+
+  #prepare
+  n_att <- length(lvl_names)
+  design <- as.matrix(design)
+  fac_x <- matrix(nrow = nrow(design), ncol = n_att)
+  jumps <- levels - 1
+  end <- cumsum(jumps)
+  begin <- 1 + end - jumps
+
+  #loop
+  for (c in 1:n_att) {
+
+    x <- as.matrix(design[, seq(begin[c], end[c], 1)])
+
+    for (i in 1:n_alts){
+      if(ncol(x)==1){
+
+        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= -1))){
+          fac_x[i,c]<-lvl_names[[c]][1]
+        }
+        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= 1))){
+          fac_x[i,c]<-lvl_names[[c]][2]
+        }
+
+      }
+
+      if(ncol(x)==2){
+        if(isTRUE(all.equal(target=as.numeric(x[i,]), current= c(-1,-1)))){
+          fac_x[i,c]<-lvl_names[[c]][1]
+        }
+        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= c(0,1)))){
+          fac_x[i,c]<-lvl_names[[c]][2]
+        }
+        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= c(1,0)))){
+          fac_x[i,c]<-lvl_names[[c]][3]
+        }
+      }
+    }
+
+  }
+
+  return(fac_x)
+}
+
+
 #' Transform responses
 #'
 #' Transforms input responses to binary response vector
