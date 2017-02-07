@@ -4,7 +4,7 @@
 #' Function to generate all possible combinations of attribute levels.
 #' @param lvls  A vector which contains for each attribute, the number of levels.
 #' @param intercept Logical argument indicating whether an intercept should be included. The Default is False.
-#' @param contr See model.matrix for more information. The default is effect coded.
+#' @param contr See contrast {stats} for more options. The default is effect coded.
 #' @return A matrix containig all possible profiles.
 #' @export
 profiles<-function (lvls, intercept=FALSE, contr='contr.sum'){
@@ -69,29 +69,18 @@ design.gen<-function (lvls, n_sets, n_alts, intercept=FALSE, contr='contr.sum'){
 #' @export
 respond<-function (par, design, n_alts){
 
-  d<-design
+  par<-as.matrix(par)
+  d <- as.matrix(design)
 
-  p<-t(t(d) * par)
-  p<-.rowSums(p, m= nrow(d), n=length(par))
-  expp<-exp(p)
-  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(d)/n_alts,1), each = n_alts)), each=n_alts)
+  #prob
+  U <- d %*% t(par)
+  expU <- exp(U)
+  p <- expU/sum(expU)
 
-  if(nrow(d) > n_alts){
+  choice<-findInterval(x=runif(1), vec=c(0,cumsum(p)))
 
-    Y<-numeric()
-    set<-seq(1,length(p)+n_alts, n_alts)
-
-      for(i in 1:(nrow(d)/n_alts)){
-
-      temp<-rep(0, n_alts)
-      temp[which.max( p[set[i]:(set[i+1]-1)] )]<-1
-
-      Y<-c(Y,temp)
-    }
-  }else{
-    Y<-rep(0, length(p))
-    Y[which.max(p)]<-1
-  }
+  Y<-rep(0,length(p))
+  Y[choice] <- 1
 
   return(Y)
 }
@@ -189,7 +178,7 @@ lattice_mvt<- function (mode, cvar, df, ...){
 #' taking into account the minimum ammount of attributelevels that need to be different per choice set.
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
-#' @param mindiff The minimal ammount of atrribute levels that needs to be different.
+#' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set.
 #' @param intercept logical value indicating whether an intercept should be present.
 #' @return Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 #' @export
