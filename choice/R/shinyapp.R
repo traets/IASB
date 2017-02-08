@@ -46,7 +46,7 @@ present<-function (design, lvl_names, levels, n_alts){
 #' Transforms an effect coded design matrix into the design matrix containing the real attributelevels.
 #' This design can be used to present to respondents.
 #' @param design An effect coded design matrix.
-#' @parem levels vector containing the number of levels for each attribute.
+#' @param levels vector containing the number of levels for each attribute.
 #' @param lvl_names A list containing the values of each level of each attribute.
 #' @param n_alts Number of alternatives per choice set.
 #' @return A desing matrix with presentable attributelevels.
