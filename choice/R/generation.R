@@ -65,9 +65,10 @@ design.gen<-function (lvls, n_sets, n_alts, intercept=FALSE, contr='contr.sum'){
 #' Function to generate responses given parameter values and a design matrix. Chooses the alternative with max probability.
 #' @param par Vector containing parameter values.
 #' @param design Design matrix.
+#' @param bin Indicates whether the returned value should be a binary vector or just the number of the chosen set.
 #' @return Vector with binary responses.
 #' @export
-respond<-function (par, design, n_alts){
+respond<-function (par, design, n_alts, bin=TRUE){
 
   par<-as.matrix(par)
   d <- as.matrix(design)
@@ -77,12 +78,15 @@ respond<-function (par, design, n_alts){
   expU <- exp(U)
   p <- expU/sum(expU)
 
+  #choice
   choice<-findInterval(x=runif(1), vec=c(0,cumsum(p)))
 
   Y<-rep(0,length(p))
   Y[choice] <- 1
 
-  return(Y)
+  #return
+  ifelse(bin, return(Y), return(choice))
+
 }
 
 #' Lattice standard normal generation.
