@@ -4,12 +4,14 @@
 \alias{respond}
 \title{Response generation}
 \usage{
-respond(par, design, n_alts)
+respond(par, design, n_alts, bin = TRUE)
 }
 \arguments{
 \item{par}{Vector containing parameter values.}
 
 \item{design}{Design matrix.}
+
+\item{bin}{Indicates whether the returned value should be a binary vector or just the number of the chosen set.}
 }
 \value{
 Vector with binary responses.
