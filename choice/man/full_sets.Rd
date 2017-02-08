@@ -11,7 +11,7 @@ full_sets(lvls, n_alts, mindiff, intercept = F, contr = "contr.sum")
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
-\item{mindiff}{The minimal ammount of atrribute levels that needs to be different.}
+\item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set.}
 
 \item{intercept}{logical value indicating whether an intercept should be present.}
 }
