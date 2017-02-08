@@ -11,7 +11,7 @@ profiles(lvls, intercept = FALSE, contr = "contr.sum")
 
 \item{intercept}{Logical argument indicating whether an intercept should be included. The Default is False.}
 
-\item{contr}{See model.matrix for more information. The default is effect coded.}
+\item{contr}{See contrast {stats} for more options. The default is effect coded.}
 }
 \value{
 A matrix containig all possible profiles.
