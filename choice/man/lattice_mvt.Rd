@@ -2,21 +2,25 @@
 % Please edit documentation in R/generation.R
 \name{lattice_mvt}
 \alias{lattice_mvt}
-\title{Lattice t-distribution generation.}
+\title{Lattice multivariate t-distribution.}
 \usage{
-lattice_mvt(mode, cvar, df, ...)
+lattice_mvt(mean, cvar, df, m, b = 2)
 }
 \arguments{
-\item{K}{Numeric value indicating the dimensionality of the distribution.}
+\item{mean}{Numeric vector indicating the multivariate mean.}
 
-\item{b}{Numeric value indicating the base.}
+\item{cvar}{A matrix which specifies the covariance matrix.}
 
-\item{m}{Numeric value. N=b^m.}
+\item{df}{Numeric value indicating the degrees of freedom for the multivariate t-distribution.}
+
+\item{m}{Numeric value. Number of samples=b^m.}
+
+\item{b}{Numeric value indicating the base (default = 2).}
 }
 \value{
-Matrix of lattice points drawn from a multivariate t-distribution.
+Matrix of lattice points drawn from a multivariate t-distribution. Each row is a sample.
 }
 \description{
-Generates a grid of points (N=b^m), coming from a multivariate t-distribution.
+Generates a grid of points coming from a multivariate t-distribution.
 }
 
