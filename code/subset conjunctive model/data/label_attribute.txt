@@ -1,0 +1,5 @@
+	prijs			
+	ligging			
+	geluidsisolatie 	
+	voorziening		
+	gebouw			
