@@ -2,21 +2,21 @@
 % Please edit documentation in R/generation.R
 \name{lattice}
 \alias{lattice}
-\title{Lattice standard normal generation.}
+\title{Lattice multivariate standard normal distribution.}
 \usage{
-lattice(K, b = 2, m = 10)
+lattice(K, b = b, m = m)
 }
 \arguments{
 \item{K}{Numeric value indicating the dimensionality of the grid.}
 
 \item{b}{Numeric value indicating the base.}
 
-\item{m}{Numeric value. N=b^m.}
+\item{m}{Numeric value. Number of samples=b^m.}
 }
 \value{
-Matrix of lattice points drawn from a multivariate standard normal distribution.
+Matrix of lattice points drawn from a multivariate standard normal distribution. Each row is a sample.
 }
 \description{
-Generates a grid of points (N=b^m), coming from a multivariate standard normal distribution with dim = K.
+Generates a grid of points coming from a multivariate standard normal distribution.
 }
 
