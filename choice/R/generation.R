@@ -96,7 +96,8 @@ respond<-function (par, design, n_alts, bin=TRUE){
 #' @param b Numeric value indicating the base.
 #' @param m Numeric value. Number of samples=b^m.
 #' @return Matrix of lattice points drawn from a multivariate standard normal distribution. Each row is a sample.
-lattice <- function (K, b=base, m=n){
+lattice <- function (K, b, m){
+
 
     base <- function(num){
 
@@ -146,11 +147,11 @@ lattice <- function (K, b=base, m=n){
 #' @param mean Numeric vector indicating the multivariate mean.
 #' @param cvar A matrix which specifies the covariance matrix.
 #' @param df Numeric value indicating the degrees of freedom for the multivariate t-distribution.
-#' @param n Numeric value. Number of samples = base^n.
-#' @param base Numeric value indicating the base (default = 2).
+#' @param m Numeric value. Number of samples = base^n.
+#' @param b Numeric value indicating the base (default = 2).
 #' @return Matrix of lattice points drawn from a multivariate t-distribution. Each row is a sample.
 #' @export
-lattice_mvt<- function (mean, cvar, df, n, base=2){
+lattice_mvt<- function (mean, cvar, df, m, b=2){
 
   dim<-length(mean)
 
@@ -182,11 +183,11 @@ lattice_mvt<- function (mean, cvar, df, n, base=2){
 #' Generates a grid of points coming from a multivariate normal distribution.
 #' @param mean Numeric vector indicating the multivariate mean.
 #' @param cvar A matrix which specifies the covariance matrix.
-#' @param n Numeric value. Number of samples = base^n.
-#' @param base Numeric value indicating the base (default = 2).
+#' @param m Numeric value. Number of samples = base^n.
+#' @param b Numeric value indicating the base (default = 2).
 #' @return Matrix of lattice points drawn from a multivariate normal distribution. Each row is a sample.
 #' @export
-lattice_mvn<-function (mean, cvar, n, base=2) {
+lattice_mvn<-function (mean, cvar, m, b=2) {
 
   dim <- length(mean)
   lattice <- lattice(K = dim)
