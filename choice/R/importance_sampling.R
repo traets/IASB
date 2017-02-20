@@ -104,7 +104,7 @@ g_dens<-function (par, g_mode, g_covar){
 #' @param Y A binary response vector.
 #' @return A list containing samples and their associated weights, which together represent the posterior distribution.
 #' @export
-imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
+imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, m, ...){
 
   #cte
   prior1<-(2*pi)^(-length(mode)/2)*(det(prior_covar))^(-0.5)
@@ -116,7 +116,7 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, ...){
   #draws from importance density
   H<-hessian(par = imp_mode, design = design, covar = prior_covar, n_alts = n_alts)
   g_covar<--solve(H)
-  g_draws<-lattice_mvt(mode=imp_mode, cvar = g_covar, df=length(imp_mode), ...)
+  g_draws<-lattice_mvt(mean=imp_mode, cvar = g_covar, df=length(imp_mode), ...)
 
   #vectors
   prior=LK=dens_g=weights<- numeric(nrow(g_draws))
@@ -175,6 +175,6 @@ modes<-function(samples, weights, s){
 
 }
 
-
+#roxygen2::roxygenise()
 
 

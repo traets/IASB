@@ -4,7 +4,7 @@
 \alias{lattice_mvt}
 \title{Lattice multivariate t-distribution.}
 \usage{
-lattice_mvt(mean, cvar, df, n, base = 2)
+lattice_mvt(mean, cvar, df, m, b = 2)
 }
 \arguments{
 \item{mean}{Numeric vector indicating the multivariate mean.}
@@ -13,9 +13,9 @@ lattice_mvt(mean, cvar, df, n, base = 2)
 
 \item{df}{Numeric value indicating the degrees of freedom for the multivariate t-distribution.}
 
-\item{n}{Numeric value. Number of samples = base^n.}
+\item{m}{Numeric value. Number of samples = base^n.}
 
-\item{base}{Numeric value indicating the base (default = 2).}
+\item{b}{Numeric value indicating the base (default = 2).}
 }
 \value{
 Matrix of lattice points drawn from a multivariate t-distribution. Each row is a sample.

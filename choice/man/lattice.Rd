@@ -4,7 +4,7 @@
 \alias{lattice}
 \title{Lattice multivariate standard normal distribution.}
 \usage{
-lattice(K, b = base, m = n)
+lattice(K, b, m)
 }
 \arguments{
 \item{K}{Numeric value indicating the dimensionality of the grid.}

@@ -4,7 +4,7 @@
 \alias{imp_sampling}
 \title{Importance sampling}
 \usage{
-imp_sampling(prior_mode, prior_covar, design, n_alts, Y, ...)
+imp_sampling(prior_mode, prior_covar, design, n_alts, Y, m, ...)
 }
 \arguments{
 \item{prior_mode}{Vector containing the mode of the multivariate normal distribution which is the prior.}
