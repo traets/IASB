@@ -96,7 +96,7 @@ respond<-function (par, design, n_alts, bin=TRUE){
 #' @param b Numeric value indicating the base.
 #' @param m Numeric value. Number of samples=b^m.
 #' @return Matrix of lattice points drawn from a multivariate standard normal distribution. Each row is a sample.
-lattice <- function (K, b = b, m = m){
+lattice <- function (K, b, m){
 
     base <- function(num){
 
