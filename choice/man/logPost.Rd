@@ -4,10 +4,10 @@
 \alias{logPost}
 \title{log Posterior}
 \usage{
-logPost(parameters, prior_mode, prior_covar, design, n_alts, Y)
+logPost(parameters, prior_mean, prior_covar, design, n_alts, Y)
 }
 \arguments{
-\item{prior_mode}{vector containing the prior mode}
+\item{prior_mean}{vector containing the prior mode}
 
 \item{prior_covar}{matrix containing the prior covariance}
 

@@ -4,18 +4,22 @@
 \alias{imp_sampling}
 \title{Importance sampling}
 \usage{
-imp_sampling(prior_mode, prior_covar, design, n_alts, Y, m, ...)
+imp_sampling(prior_mean, prior_covar, design, n_alts, Y, m, b = 2, ...)
 }
 \arguments{
-\item{prior_mode}{Vector containing the mode of the multivariate normal distribution which is the prior.}
+\item{prior_mean}{Numeric vector which is the mean of the multivariate normal distribution (prior).}
 
-\item{prior_covar}{The covariance matrix of the multivariate normal prior distribution.}
+\item{prior_covar}{A matrix, the covariance matrix of the multivariate normal distribution (prior).}
 
 \item{design}{A design matrix in which each row is a profile.}
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
 \item{Y}{A binary response vector.}
+
+\item{m}{Numeric value. Number of samples = base^m.}
+
+\item{b}{Numeric value indicating the base (default = 2).}
 }
 \value{
 A list containing samples and their associated weights, which together represent the posterior distribution.

@@ -11,7 +11,7 @@ lattice_mvn(mean, cvar, m, b = 2)
 
 \item{cvar}{A matrix which specifies the covariance matrix.}
 
-\item{m}{Numeric value. Number of samples = base^n.}
+\item{m}{Numeric value. Number of samples = b^m.}
 
 \item{b}{Numeric value indicating the base (default = 2).}
 }

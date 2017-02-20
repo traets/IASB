@@ -13,7 +13,7 @@ lattice_mvt(mean, cvar, df, m, b = 2)
 
 \item{df}{Numeric value indicating the degrees of freedom for the multivariate t-distribution.}
 
-\item{m}{Numeric value. Number of samples = base^n.}
+\item{m}{Numeric value. Number of samples = b^m.}
 
 \item{b}{Numeric value indicating the base (default = 2).}
 }
