@@ -156,7 +156,7 @@ lattice_mvt<- function (mean, cvar, df, m, b=2){
   dim<-length(mean)
 
   #gen lattice from standard normal
-  lattice<- lattice(K = dim)
+  lattice<- lattice(K = dim, b, m)
 
   mean <- t(mean)
   X <- matrix(NA, nrow(lattice), dim)
@@ -190,7 +190,7 @@ lattice_mvt<- function (mean, cvar, df, m, b=2){
 lattice_mvn<-function (mean, cvar, m, b=2) {
 
   dim <- length(mean)
-  lattice <- lattice(K = dim)
+  lattice <- lattice(K = dim, b, m)
   mean <- t(mean)
   X <- matrix(NA, nrow(lattice), dim)
   A <- chol(cvar)
