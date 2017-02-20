@@ -4,16 +4,16 @@
 \alias{lattice_mvn}
 \title{Lattice multivariate normal distribution.}
 \usage{
-lattice_mvn(mean, cvar, m, b = 2)
+lattice_mvn(mean, cvar, n, base = 2)
 }
 \arguments{
 \item{mean}{Numeric vector indicating the multivariate mean.}
 
 \item{cvar}{A matrix which specifies the covariance matrix.}
 
-\item{m}{Numeric value. Number of samples=b^m.}
+\item{n}{Numeric value. Number of samples = base^n.}
 
-\item{b}{Numeric value indicating the base (default = 2).}
+\item{base}{Numeric value indicating the base (default = 2).}
 }
 \value{
 Matrix of lattice points drawn from a multivariate normal distribution. Each row is a sample.
