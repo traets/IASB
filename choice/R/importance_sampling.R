@@ -118,7 +118,7 @@ imp_sampling <- function (prior_mean, prior_covar, design,  n_alts, Y, m, b=2, .
   #draws from importance density
   H<-hessian(par = imp_mode, design = design, covar = prior_covar, n_alts = n_alts)
   g_covar<--solve(H)
-  g_draws<-lattice_mvt(mean=imp_mode, cvar = g_covar, df=length(imp_mode), ...)
+  g_draws<-lattice_mvt(mean=imp_mode, cvar = g_covar, df=length(imp_mode), m=m, ...)
 
   #vectors
   prior=LK=dens_g=weights<- numeric(nrow(g_draws))
