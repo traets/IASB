@@ -7,11 +7,11 @@
 #' @param design The Design matrix
 #' @param Y the response vector
 #' @param n_alts The number of alternatives in each choice set
-#' @param prior_mode vector containing the prior mode
+#' @param prior_mean vector containing the prior mode
 #' @param prior_covar matrix containing the prior covariance
 #' @return the logposterior probability
 #' @export
-logPost<-function(parameters, prior_mode, prior_covar, design,  n_alts, Y ){
+logPost<-function(parameters, prior_mean, prior_covar, design,  n_alts, Y ){
 
   p<-t(t(design) * parameters)
   p<-.rowSums(p, m= nrow(design), n=length(parameters))
@@ -20,9 +20,9 @@ logPost<-function(parameters, prior_mode, prior_covar, design,  n_alts, Y ){
 
   log_L<-sum(Y*log(p))
 
-  logprior2=-0.5*(parameters -t(prior_mode))%*%solve(prior_covar)%*%(as.matrix(parameters) - prior_mode)
+  logprior2=-0.5*(parameters -t(prior_mean))%*%solve(prior_covar)%*%(as.matrix(parameters) - prior_mean)
 
-  logpost<-(length(prior_mode)/2*log(2*pi)-0.5*log(det(prior_covar))) + logprior2 + log_L
+  logpost<-(length(prior_mean)/2*log(2*pi)-0.5*log(det(prior_covar))) + logprior2 + log_L
 
   return(logpost)
 
@@ -97,20 +97,22 @@ g_dens<-function (par, g_mode, g_covar){
 #' This functions samples from an imortance density (multivariate t-distribution),
 #' and gives weightes to the samples according to the posterior distribution. The prior is
 #' a normal distribution.
-#' @param prior_mode Vector containing the mode of the multivariate normal distribution which is the prior.
-#' @param prior_covar The covariance matrix of the multivariate normal prior distribution.
+#' @param prior_mean Numeric vector which is the mean of the multivariate normal distribution (prior).
+#' @param prior_covar A matrix, the covariance matrix of the multivariate normal distribution (prior).
 #' @param design A design matrix in which each row is a profile.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param Y A binary response vector.
+#' @param m Numeric value. Number of samples = base^m.
+#' @param b Numeric value indicating the base (default = 2).
 #' @return A list containing samples and their associated weights, which together represent the posterior distribution.
 #' @export
-imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, m, ...){
+imp_sampling <- function (prior_mean, prior_covar, design,  n_alts, Y, m, b=2, ...){
 
   #cte
   prior1<-(2*pi)^(-length(mode)/2)*(det(prior_covar))^(-0.5)
 
   #estimate importance mode
-  imp_mode<-maxLik::maxNR(logPost, start= prior_mode, prior_mode = prior_mode, prior_covar= prior_covar,
+  imp_mode<-maxLik::maxNR(logPost, start= prior_mean, prior_mean = prior_mean, prior_covar= prior_covar,
                           design = design, Y=Y, n_alts=n_alts)$estimate
 
   #draws from importance density
@@ -124,7 +126,7 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, m, ...){
   for (r in 1:nrow(g_draws)){
 
     #prior
-    prior[r]<-prior1*exp(-0.5* (g_draws[r, ]-prior_mode) %*% solve(prior_covar) %*% as.matrix(g_draws[r, ]- prior_mode))
+    prior[r]<-prior1*exp(-0.5* (g_draws[r, ]-prior_mean) %*% solve(prior_covar) %*% as.matrix(g_draws[r, ]- prior_mean))
     #likelihood
     LK[r]<-Lik(par = g_draws[r, ], design = design, Y=Y, n_alts = n_alts)
     #density of g
@@ -139,41 +141,6 @@ imp_sampling <- function (prior_mode, prior_covar, design,  n_alts, Y, m, ...){
   return(list(g_draws, w, imp_mode, g_covar))
 }
 
-#' modes
-#'
-#' This functions returns a vector with the posterior modes,
-#' given samples from the posterior and their weights (importance sampling).
-#' @param samples Matrix with samples coming from the posterior distribution. Each row is a sample.
-#' @param weights Vector containing the weights of the samples.
-#' @return The mode of the posterior distribution.
-#' @export
-modes<-function(samples, weights, s){
-
-  mode<-numeric(ncol(samples))
-
-  for (i in 1:ncol(samples)){
-
-    ### posterior probability
-    #mean weight intervals
-    h<-hist(sam[ ,i], breaks = nrow(samples)/s)
-    group_fac<-factor(rep(1:(length(h$breaks)-1), h$counts))
-    w_groups<-split(w, group_fac)
-    mean_weight<-unlist(lapply(w_groups, mean))
-
-    #posterior= mean weights * frequency
-    freq<-h$counts[h$counts != 0]
-    int_mids<-h$mids[h$counts != 0]
-    pos<-freq*mean_weight/sum(freq*mean_weight)
-    d<-as.data.frame(cbind(int_mids,pos))
-
-    d<-d[with(d, order(-pos)), ]
-    mode[i]<-d$int_mids[1]
-
-  }
-
-  return(mode)
-
-}
 
 #roxygen2::roxygenise()
 
