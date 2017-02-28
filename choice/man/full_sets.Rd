@@ -4,7 +4,7 @@
 \alias{full_sets}
 \title{All choice sets}
 \usage{
-full_sets(lvls, n_alts, mindiff, intercept = F, contr = "contr.sum")
+full_sets(lvls, n_alts, mindiff, coding, intercept = F)
 }
 \arguments{
 \item{lvls}{A vector which contains for each attribute, the number of levels.}
@@ -12,6 +12,8 @@ full_sets(lvls, n_alts, mindiff, intercept = F, contr = "contr.sum")
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
 \item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set.}
+
+\item{coding}{Type op coding that need to be used. See ?contrasts for more information.}
 
 \item{intercept}{logical value indicating whether an intercept should be present.}
 }
