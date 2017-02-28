@@ -28,17 +28,18 @@ profiles<- function (lvls, coding, intercept = FALSE) {
 
 #' Design generation
 #'
-#' Function to generate a Design matrix given the number of choice sets,
-#' the number of alternatives per choice set and a matrix containting possible profiles.
+#' Function to generate a random design matrix.
+#' @param lvls  A vector which contains for each attribute, the number of levels.
 #' @param n_sets Numeric value indicating the number of choide sets.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
-#' @param profiles Matrix containing (all) possible profiles.
+#' @param coding Type op coding that need to be used. See ?contrasts for more information.
+#' @param intercept Logical argument indicating whether an intercept should be included. The default is False.
 #' @return A design matrix
 #' @export
-design.gen<-function (lvls, n_sets, n_alts, intercept=FALSE, contr='contr.sum'){
+design.gen<-function (lvls, n_sets, n_alts, coding, intercept=FALSE){
 
 
-  profs<-profiles(lvls = lvls, contr = contr, intercept = intercept)
+  profs<-profiles(lvls = lvls, coding = coding, intercept = intercept)
 
   R<-round(runif((n_alts*n_sets), 1, nrow(profs)))
   design<-profs[R,]
