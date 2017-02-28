@@ -1,101 +1,36 @@
-#' nominal design matrix
+#' Attribute level choice set
 #'
-#' Transforms an effect coded design matrix into the design matrix containing the real attributelevels.
-#' This design can be used to present to respondents.
-#' @param design An effect coded design matrix.
+#' Transforms a coded choice set into a choice set containing the attribute levels.
+#' @param set A numeric matrix which represents a choice set. Each row is a profile.
 #' @param lvl_names A list containing the values of each level of each attribute.
-#' @param n_alts Number of alternatives per choice set.
-#' @return A desing matrix with presentable attributelevels.
+#' @param coding Type of coding used in the given set. See ?contrasts for more info.
+#' @return A character matrix which represents the choice set.
 #' @export
-present<-function (design, lvl_names, levels, n_alts){
+present<-function (set, lvl_names, coding, intercept= FALSE) {
 
-
-  levels<-numeric(length(lvl_names))
-  for(i in 1:length(levels)){levels[i]<-length(lvl_names[[i]])}
-  n_att<-length(lvl_names)
-  design<-as.matrix(design)
-  mat<-matrix(nrow = nrow(design), ncol = n_att)
-  jumps<-levels - 1
-  end<-cumsum(jumps)
-  begin<-1+end-jumps
-
-  for (col in 1:n_att){
-    x<-as.matrix(design[, seq(begin[col], end[col], 1)])
-    mat[,col]<- attr(uniquecombs(x),"index")
-   }
-
-  fac_des<-as.matrix(mat)
-
-  for (i in 1:ncol(fac_des)){
-    fac_des[ ,i]<-mapvalues(fac_des[,i], from = sort(unique(fac_des[,i])),
-                            to = lvl_names[[i]][1:max(as.numeric(fac_des[,i]))])
-    fac_des<-as.data.frame(fac_des)
-  }
-
- #setnr and alts
- set<-rep(seq(1, nrow(design)/n_alts, 1), each=n_alts)
- alt<-rep(seq(1, n_alts, 1), nrow(design)/n_alts )
- fac_des<-cbind(fac_des, set=set, alt=alt)
-
- return(fac_des)
-
-}
-
-#' label design matrix
-#'
-#' Transforms an effect coded design matrix into the design matrix containing the real attributelevels.
-#' This design can be used to present to respondents.
-#' @param design An effect coded design matrix.
-#' @param levels vector containing the number of levels for each attribute.
-#' @param lvl_names A list containing the values of each level of each attribute.
-#' @param n_alts Number of alternatives per choice set.
-#' @return A desing matrix with presentable attributelevels.
-#' @export
-present_Gil<-function(design, levels, lvl_names, n_alts){
-
-  #prepare
+  n_alts<-nrow(set)
   n_att <- length(lvl_names)
-  design <- as.matrix(design)
-  fac_x <- matrix(nrow = nrow(design), ncol = n_att)
-  jumps <- levels - 1
-  end <- cumsum(jumps)
-  begin <- 1 + end - jumps
+  lvls<-numeric(n_att)
+  for (i in 1:n_att){ lvls[i]<-length(lvl_names[[i]]) }
 
-  #loop
-  for (c in 1:n_att) {
+  D<-profiles(lvls = lvls, coding = coding, intercept = intercept)[[1]]
+  DC<-profiles(lvls = lvls, coding = coding, intercept= intercept)[[2]]
 
-    x <- as.matrix(design[, seq(begin[c], end[c], 1)])
+  MC<-matrix(data = NA, nrow = n_alts, ncol = n_att)
 
-    for (i in 1:n_alts){
-      if(ncol(x)==1){
+  for (i in 1:n_alts){
+    ln <- D[as.numeric(which(apply(DC, 1, function(x) all(x == set[i, ])))), ]
+    lnn<-as.numeric(ln)
 
-        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= -1))){
-          fac_x[i,c]<-lvl_names[[c]][1]
-        }
-        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= 1))){
-          fac_x[i,c]<-lvl_names[[c]][2]
-        }
+    if(any(is.na(lnn))) stop('the set does not match with the type of coding provided')
 
-      }
-
-      if(ncol(x)==2){
-        if(isTRUE(all.equal(target=as.numeric(x[i,]), current= c(-1,-1)))){
-          fac_x[i,c]<-lvl_names[[c]][1]
-        }
-        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= c(0,1)))){
-          fac_x[i,c]<-lvl_names[[c]][2]
-        }
-        if(isTRUE(all.equal(target=as.numeric(x[i,]),current= c(1,0)))){
-          fac_x[i,c]<-lvl_names[[c]][3]
-        }
-      }
-    }
+    for (c in 1:n_att){MC[i,c]<-   lvl_names[[c]] [lnn[c]] }
 
   }
 
-  return(fac_x)
-}
+  return(MC)
 
+}
 
 #' Transform responses
 #'
