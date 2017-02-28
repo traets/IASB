@@ -198,12 +198,12 @@ lattice_mvn<-function (mean, cvar, m, b=2) {
 #' taking into account the minimum ammount of attributelevels that need to be different per choice set.
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
-#' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set.
 #' @param coding Type op coding that need to be used. See ?contrasts for more information.
 #' @param intercept logical value indicating whether an intercept should be present.
+#' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.
 #' @return Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 #' @export
-full_sets<- function(lvls, n_alts, mindiff, coding, intercept= F){
+full_sets<- function(lvls, n_alts, coding, intercept= F, mindiff= 0){
 
   cand<-profiles(lvls = lvls, coding = coding)[[2]]
   fun<-function(x){return(1:x)}
