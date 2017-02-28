@@ -39,7 +39,7 @@ profiles<- function (lvls, coding, intercept = FALSE) {
 design.gen<-function (lvls, n_sets, n_alts, coding, intercept=FALSE){
 
 
-  profs<-profiles(lvls = lvls, coding = coding, intercept = intercept)
+  profs<-profiles(lvls = lvls, coding = coding, intercept = intercept)[[2]]
 
   R<-round(runif((n_alts*n_sets), 1, nrow(profs)))
   design<-profs[R,]
@@ -199,12 +199,13 @@ lattice_mvn<-function (mean, cvar, m, b=2) {
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set.
+#' @param coding Type op coding that need to be used. See ?contrasts for more information.
 #' @param intercept logical value indicating whether an intercept should be present.
 #' @return Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
 #' @export
-full_sets<- function(lvls, n_alts, mindiff, intercept= F, contr='contr.sum'){
+full_sets<- function(lvls, n_alts, mindiff, coding, intercept= F){
 
-  cand<-profiles(lvls = lvls)
+  cand<-profiles(lvls = lvls, coding = coding)[[2]]
   fun<-function(x){return(1:x)}
   N<- nrow(cand)
 
