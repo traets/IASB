@@ -2,22 +2,21 @@
 % Please edit documentation in R/shinyapp.R
 \name{present}
 \alias{present}
-\title{nominal design matrix}
+\title{Attribute level choice set}
 \usage{
-present(design, lvl_names, levels, n_alts)
+present(set, lvl_names, coding, intercept = FALSE)
 }
 \arguments{
-\item{design}{An effect coded design matrix.}
+\item{set}{A numeric matrix which represents a choice set. Each row is a profile.}
 
 \item{lvl_names}{A list containing the values of each level of each attribute.}
 
-\item{n_alts}{Number of alternatives per choice set.}
+\item{coding}{Type of coding used in the given set. See ?contrasts for more info.}
 }
 \value{
-A desing matrix with presentable attributelevels.
+A character matrix which represents the choice set.
 }
 \description{
-Transforms an effect coded design matrix into the design matrix containing the real attributelevels.
-This design can be used to present to respondents.
+Transforms a coded choice set into a choice set containing the attribute levels.
 }
 

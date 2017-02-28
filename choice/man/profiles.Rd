@@ -2,21 +2,21 @@
 % Please edit documentation in R/generation.R
 \name{profiles}
 \alias{profiles}
-\title{Profile generation}
+\title{Profiles generation}
 \usage{
-profiles(lvls, intercept = FALSE, contr = "contr.sum")
+profiles(lvls, coding, intercept = FALSE)
 }
 \arguments{
 \item{lvls}{A vector which contains for each attribute, the number of levels.}
 
-\item{intercept}{Logical argument indicating whether an intercept should be included. The Default is False.}
+\item{coding}{Type op coding that need to be used. See ?contrasts for more information.}
 
-\item{contr}{See contrast {stats} for more options. The default is effect coded.}
+\item{intercept}{Logical argument indicating whether an intercept should be included. The Default is False.}
 }
 \value{
-A matrix containig all possible profiles.
+A list containing 2 matrices, one contains all possible profiles with discrete levels, the other contains the coded version.
 }
 \description{
-Function to generate all possible combinations of attribute levels.
+Function to generate all possible combinations of attribute levels (i.e. all possible profiles).
 }
 
