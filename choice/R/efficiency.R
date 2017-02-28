@@ -72,9 +72,10 @@ info_design<-function (par, design, n_alts){
 #' @param par_samples A matrix in which each row is a sample from a multivariate parameter distribution.
 #' @param weights A vector containing the weights of all the samples.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
+#' @param print Logical statement indicating whether to print the KL information or not.
 #' @return The most efficient choice set, based on the KL information criterion.
 #' @export
-KL_info<-function (fp, fcomb, par_samples, weights, n_alts){
+KL_info<-function (fp, fcomb, par_samples, weights, n_alts, print=FALSE){
 
   minKL <- 0
   new_set<-numeric()
@@ -99,6 +100,7 @@ KL_info<-function (fp, fcomb, par_samples, weights, n_alts){
     if (klinfo > minKL) {
       minKL <- klinfo
       new_set <- set
+      if(print){print(klinfo)}
     }
   }
   return(new_set)
