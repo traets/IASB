@@ -4,18 +4,18 @@
 \alias{full_sets}
 \title{All choice sets}
 \usage{
-full_sets(lvls, n_alts, mindiff, coding, intercept = F)
+full_sets(lvls, n_alts, coding, intercept = F, mindiff = 0)
 }
 \arguments{
 \item{lvls}{A vector which contains for each attribute, the number of levels.}
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
-\item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set.}
-
 \item{coding}{Type op coding that need to be used. See ?contrasts for more information.}
 
 \item{intercept}{logical value indicating whether an intercept should be present.}
+
+\item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set.}
 }
 \value{
 Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
