@@ -1,41 +1,29 @@
 
-#' Profile generation
+#' Profiles generation
 #'
-#' Function to generate all possible combinations of attribute levels.
+#' Function to generate all possible combinations of attribute levels (i.e. all possible profiles).
 #' @param lvls  A vector which contains for each attribute, the number of levels.
+#' @param coding Type op coding that need to be used. See ?contrasts for more information.
 #' @param intercept Logical argument indicating whether an intercept should be included. The Default is False.
-#' @param contr See contrast {stats} for more options. The default is effect coded.
-#' @return A matrix containig all possible profiles.
+#' @return A list containing 2 matrices, one contains all possible profiles with discrete levels, the other contains the coded version.
 #' @export
-profiles<-function (lvls, intercept=FALSE, contr='contr.sum'){
+profiles<- function (lvls, coding, intercept = FALSE) {
 
-
-  #Make list with all atribute levels
-  lvls <-lapply(X = as.list(lvls), function (x) (1:x))
-
-  #generate every combination
-  full_design<-as.data.frame(expand.grid(lvls))
-
-  #create factors:
-  colnames <- names(full_design)
-  full_design[ ,colnames] <- lapply(full_design[ ,colnames], factor)
-
-  #contrast list
+  lvls <- lapply(X = as.list(lvls), function(x) (1:x))
+  D <- as.data.frame(expand.grid(lvls))
+  cn <- names(D)
+  D[, cn] <- lapply(D[, cn],  factor)
   con <- list()
 
-  for(i in 1:length(lvls)){
-   name <- paste('Var',i,sep='')
-   con[name] <- contr
+  for (i in 1:length(lvls)) {
+    name <- paste("Var", i, sep = "")
+    con[name] <- coding
   }
 
-  #coding
-  full_D <- as.data.frame(model.matrix(~ ., full_design, contrasts = con))
+  CD <- as.data.frame(model.matrix(~., D, contrasts = con))
+  if (intercept == F) { CD <- CD[, -1]}
 
-  #delete intercept
-  if (intercept==F) {full_D <- full_D[,-1]}
-
-  return(as.matrix(full_D))
-
+  return(list(D, as.matrix(CD)))
 }
 
 #' Design generation
