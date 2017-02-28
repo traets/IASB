@@ -15,7 +15,7 @@ full_sets(lvls, n_alts, coding, intercept = F, mindiff = 0)
 
 \item{intercept}{logical value indicating whether an intercept should be present.}
 
-\item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set.}
+\item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.}
 }
 \value{
 Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
