@@ -4,20 +4,23 @@
 \alias{design.gen}
 \title{Design generation}
 \usage{
-design.gen(lvls, n_sets, n_alts, intercept = FALSE, contr = "contr.sum")
+design.gen(lvls, n_sets, n_alts, coding, intercept = FALSE)
 }
 \arguments{
+\item{lvls}{A vector which contains for each attribute, the number of levels.}
+
 \item{n_sets}{Numeric value indicating the number of choide sets.}
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
-\item{profiles}{Matrix containing (all) possible profiles.}
+\item{coding}{Type op coding that need to be used. See ?contrasts for more information.}
+
+\item{intercept}{Logical argument indicating whether an intercept should be included. The default is False.}
 }
 \value{
 A design matrix
 }
 \description{
-Function to generate a Design matrix given the number of choice sets,
-the number of alternatives per choice set and a matrix containting possible profiles.
+Function to generate a random design matrix.
 }
 
