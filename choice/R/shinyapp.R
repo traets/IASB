@@ -18,6 +18,9 @@ present<-function (set, lvl_names, coding, intercept= FALSE) {
 
   MC<-matrix(data = NA, nrow = n_alts, ncol = n_att)
 
+  if (ncol(set)!= ncol(DC)) {stop('number of colums of set does not match expected number.
+  Make sure number of attributes and levels are correct (lvl_names) as well as the intercept argument.')}
+
   for (i in 1:n_alts){
     ln <- D[as.numeric(which(apply(DC, 1, function(x) all(x == set[i, ])))), ]
     lnn<-as.numeric(ln)
