@@ -12,12 +12,12 @@ map_resp(resp, resp_options, n_alts, neutral = T)
 \item{resp_options}{String vector containing all possible responses.
 The response options should be specified in increasing order, starting with (if included), the neutral response.}
 
-\item{n_alts}{Number of alternatives per choice set.}
+\item{n_alts}{The number of alternatives per choice set.}
 
 \item{neutral}{Logical value indicating whether a neutral option is provided or not. Default = TRUE.}
 }
 \value{
-A binary response vector
+A binary response vector.
 }
 \description{
 Transforms input responses to binary response vector
