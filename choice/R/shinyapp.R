@@ -41,9 +41,9 @@ present<-function (set, lvl_names, coding, intercept= FALSE) {
 #' @param resp String vector containing input responses
 #' @param resp_options String vector containing all possible responses.
 #' The response options should be specified in increasing order, starting with (if included), the neutral response.
-#' @param n_alts Number of alternatives per choice set.
+#' @param n_alts The number of alternatives per choice set.
 #' @param neutral Logical value indicating whether a neutral option is provided or not. Default = TRUE.
-#' @return A binary response vector
+#' @return A binary response vector.
 #' @export
 map_resp<-function(resp, resp_options, n_alts, neutral=T){
 
@@ -96,6 +96,46 @@ savedrop <- function(d, Y, dir, filename) {
 
   drop_upload(filePath, dest = dir)
 }
+
+#' Binary to discrete matrix
+#'
+#' Transforms a matrix with binary choice data for each respondent (columns),
+#' to a matrix with discrete values representing the choices.
+#' @param y Matrix containing the binary choice data.
+#' @param n_alts The number of alternatives per choice set.
+#' @return A matrix with discrete values, indicating the choices.
+#' @export
+bindis<-function(y, n_alts){
+
+  #divide into choice sets
+  fun1<-function(x) split(x, ceiling(seq_along(x)/n_alts))
+  YY<-apply(y,2,fun1)
+
+  #warning 1
+  for (i in 1:ncol(y)){
+    if((length(unique(lengths(YY[[i]]))) == 1L) == FALSE){
+      stop('length of Y vector does match expected length based on nr of alternatives')
+    }
+  }
+
+  #index 1's
+  fun<-function(x){xx<-(x==1); indexone <-which(xx, arr.ind = TRUE); if(length(indexone) > 1){stop('Multiple alternatives are chosen per choice set.
+                                                                                                   The response data or the number of alternatives is probably incorrect.')}; return(indexone)}
+  Y_Y<-list()
+  for(r in 1: ncol(y)){
+    Y_Y[[r]]<-lapply(YY[[r]], fun)
+  }
+
+  #rbind
+  fun3<-function(x) {as.numeric(rbind(x))}
+  ynom<-lapply(Y_Y, fun3)
+
+
+  y_nom<-matrix(unlist(ynom), ncol=ncol(y), byrow= FALSE)
+
+  return(y_nom)
+
+  }
 
 
 #roxygen2::roxygenise()
