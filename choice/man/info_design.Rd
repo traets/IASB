@@ -4,12 +4,12 @@
 \alias{info_design}
 \title{Fisher Information of design}
 \usage{
-info_design(par, design, n_alts)
+info_design(par, des, n_alts)
 }
 \arguments{
 \item{par}{A vector containing the parameter values}
 
-\item{design}{A design matrix. Each row is a profile, successive rows form choice sets.}
+\item{des}{A design matrix in which each row is a profile.}
 }
 \value{
 Fisher Information matrix.

@@ -4,10 +4,10 @@
 \alias{savedrop}
 \title{Save to dropbox}
 \usage{
-savedrop(d, Y, dir, filename)
+savedrop(des, Y, dir, filename)
 }
 \arguments{
-\item{d}{Matrix containing the design.}
+\item{des}{A design matrix in which each row is a profile.}
 
 \item{Y}{A response vector.}
 }

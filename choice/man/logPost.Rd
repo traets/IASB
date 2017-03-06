@@ -4,20 +4,20 @@
 \alias{logPost}
 \title{log Posterior}
 \usage{
-logPost(parameters, prior_mean, prior_covar, design, n_alts, Y)
+logPost(par, prior_mean, prior_covar, des, n_alts, Y)
 }
 \arguments{
-\item{prior_mean}{vector containing the prior mode}
+\item{par}{Numeric vector with parametervalues.}
 
-\item{prior_covar}{matrix containing the prior covariance}
+\item{prior_mean}{vector containing the prior mean.}
 
-\item{design}{The Design matrix}
+\item{prior_covar}{matrix containing the prior covariance.}
 
-\item{n_alts}{The number of alternatives in each choice set}
+\item{des}{A design matrix in which each row is a profile.}
 
-\item{Y}{the response vector}
+\item{n_alts}{The number of alternatives in each choice set.}
 
-\item{par}{parameter value(s) for wich the logposterior is calculated}
+\item{Y}{A binary response vector.}
 }
 \value{
 the logposterior probability

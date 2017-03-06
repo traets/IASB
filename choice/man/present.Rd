@@ -12,6 +12,8 @@ present(set, lvl_names, coding, intercept = FALSE)
 \item{lvl_names}{A list containing the values of each level of each attribute.}
 
 \item{coding}{Type of coding used in the given set. See ?contrasts for more info.}
+
+\item{intercept}{Logical argument indicating whether an intercept is included. The default is False.}
 }
 \value{
 A character matrix which represents the choice set.

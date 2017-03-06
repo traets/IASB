@@ -4,17 +4,17 @@
 \alias{respond}
 \title{Response generation}
 \usage{
-respond(par, design, n_alts, bin = TRUE)
+respond(par, set, n_alts, bin = TRUE)
 }
 \arguments{
 \item{par}{Vector containing parameter values.}
 
-\item{design}{Design matrix.}
+\item{set}{A numeric matrix which represents a choice set. Each row is a profile.}
 
-\item{bin}{Indicates whether the returned value should be a binary vector or just the number of the chosen set.}
+\item{bin}{Indicates whether the returned value should be a binary vector or a discrete value which denotes the chosen alternative.}
 }
 \value{
-Vector with binary responses.
+Binary response vector or discrete value indicating the choosing alternative.
 }
 \description{
 Function to generate responses given parameter values and a design matrix. Chooses the alternative with max probability.

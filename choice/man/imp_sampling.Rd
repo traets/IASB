@@ -4,14 +4,14 @@
 \alias{imp_sampling}
 \title{Importance sampling}
 \usage{
-imp_sampling(prior_mean, prior_covar, design, n_alts, Y, m, b = 2, ...)
+imp_sampling(prior_mean, prior_covar, des, n_alts, Y, m, b = 2, ...)
 }
 \arguments{
 \item{prior_mean}{Numeric vector which is the mean of the multivariate normal distribution (prior).}
 
 \item{prior_covar}{A matrix, the covariance matrix of the multivariate normal distribution (prior).}
 
-\item{design}{A design matrix in which each row is a profile.}
+\item{des}{A design matrix in which each row is a profile.}
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
@@ -22,7 +22,7 @@ imp_sampling(prior_mean, prior_covar, design, n_alts, Y, m, b = 2, ...)
 \item{b}{Numeric value indicating the base (default = 2).}
 }
 \value{
-A list containing samples and their associated weights, which together represent the posterior distribution.
+A list containing samples, their associated weights, the maximum likelihood estimates and the estimated covariance matrix.
 }
 \description{
 This functions samples from an imortance density (multivariate t-distribution),

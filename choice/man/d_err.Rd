@@ -4,12 +4,12 @@
 \alias{d_err}
 \title{D-error}
 \usage{
-d_err(par, design, n_alts)
+d_err(par, des, n_alts)
 }
 \arguments{
 \item{par}{Vector containing parameter values.}
 
-\item{design}{Design matrix.}
+\item{des}{A design matrix in which each row is a profile.}
 
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 }

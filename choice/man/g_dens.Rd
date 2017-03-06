@@ -4,12 +4,12 @@
 \alias{g_dens}
 \title{Density multivariate t-distribution}
 \usage{
-g_dens(par, g_mode, g_covar)
+g_dens(par, g_mean, g_covar)
 }
 \arguments{
-\item{par}{vector with parametervalues.}
+\item{par}{Numeric vector with parametervalues.}
 
-\item{g_mode}{vector containing the mode of the multivariate t-distribution.}
+\item{g_mean}{vector containing the mean of the multivariate t-distribution.}
 
 \item{g_covar}{covariance matrix of the multivariate t-distribution.}
 }

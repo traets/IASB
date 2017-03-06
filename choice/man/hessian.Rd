@@ -4,16 +4,16 @@
 \alias{hessian}
 \title{Hessian}
 \usage{
-hessian(par, design, covar, n_alts)
+hessian(par, des, covar, n_alts)
 }
 \arguments{
-\item{par}{parameter value(s)}
+\item{par}{Numeric vector with parametervalues.}
 
-\item{design}{The design matrix}
+\item{des}{A design matrix in which each row is a profile.}
 
-\item{covar}{the covariance matrix}
+\item{covar}{The covariance matrix.}
 
-\item{n_alts}{The number of alternatives in each choice set}
+\item{n_alts}{The number of alternatives in each choice set.}
 }
 \value{
 the hessian matrix
