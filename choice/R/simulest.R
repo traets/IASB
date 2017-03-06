@@ -179,5 +179,33 @@ datatrans<-function(pkg, des, Y, n_alts, n_sets, n_resp, n_beta, bin){
 
 }
 
+#' Response generation
+#'
+#' Function to generate responses given parameter values and a design matrix according to MNL model.
+#' @param par Vector containing parameter values.
+#' @param set A numeric matrix which represents a choice set. Each row is a profile.
+#' @param bin Indicates whether the returned value should be a binary vector or a discrete value which denotes the chosen alternative.
+#' @return Binary response vector or discrete value indicating the choosing alternative.
+#' @export
+respond<-function (par, set, n_alts, bin=TRUE){
+
+  par<-as.matrix(par)
+  d <- as.matrix(set)
+
+  #prob
+  U <- d %*% t(par)
+  expU <- exp(U)
+  p <- expU/sum(expU)
+
+  #choice
+  choice<-findInterval(x=runif(1), vec=c(0,cumsum(p)))
+
+  Y<-rep(0,length(p))
+  Y[choice] <- 1
+
+  #return
+  ifelse(bin, return(Y), return(choice))
+
+}
 
 #roxygen2::roxygenise()
