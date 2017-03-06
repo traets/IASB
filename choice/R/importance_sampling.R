@@ -3,24 +3,24 @@
 #' log Posterior
 #'
 #' Calculates the logposterior with a normal prior density
-#' @param par parameter value(s) for wich the logposterior is calculated
-#' @param design The Design matrix
-#' @param Y the response vector
-#' @param n_alts The number of alternatives in each choice set
-#' @param prior_mean vector containing the prior mode
-#' @param prior_covar matrix containing the prior covariance
+#' @param par Numeric vector with parametervalues.
+#' @param des A design matrix in which each row is a profile.
+#' @param Y A binary response vector.
+#' @param n_alts The number of alternatives in each choice set.
+#' @param prior_mean vector containing the prior mean.
+#' @param prior_covar matrix containing the prior covariance.
 #' @return the logposterior probability
 #' @export
-logPost<-function(parameters, prior_mean, prior_covar, design,  n_alts, Y ){
+logPost<-function(par, prior_mean, prior_covar, des,  n_alts, Y ){
 
-  p<-t(t(design) * parameters)
-  p<-.rowSums(p, m= nrow(design), n=length(parameters))
+  p<-t(t(des) * par)
+  p<-.rowSums(p, m= nrow(des), n=length(par))
   expp<-exp(p)
-  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(design)/n_alts, 1), each = n_alts)), each=n_alts)
+  p<-expp/rep(rowsum(expp, rep(seq(1, nrow(des)/n_alts, 1), each = n_alts)), each=n_alts)
 
   log_L<-sum(Y*log(p))
 
-  logprior2=-0.5*(parameters -t(prior_mean))%*%solve(prior_covar)%*%(as.matrix(parameters) - prior_mean)
+  logprior2=-0.5*(par -t(prior_mean))%*%solve(prior_covar)%*%(as.matrix(par) - prior_mean)
 
   logpost<-(length(prior_mean)/2*log(2*pi)-0.5*log(det(prior_covar))) + logprior2 + log_L
 
@@ -30,14 +30,14 @@ logPost<-function(parameters, prior_mean, prior_covar, design,  n_alts, Y ){
 
 #' Hessian
 #'
-#' @param par parameter value(s)
-#' @param design The design matrix
-#' @param covar the covariance matrix
-#' @param n_alts The number of alternatives in each choice set
+#' @param par Numeric vector with parametervalues.
+#' @param des A design matrix in which each row is a profile.
+#' @param covar The covariance matrix.
+#' @param n_alts The number of alternatives in each choice set.
 #' @return the hessian matrix
-hessian<-function (par, design, covar, n_alts){
+hessian<-function (par, des, covar, n_alts){
 
-  des<-as.matrix(design)
+  des<-as.matrix(des)
   p<- des %*% diag(par)
   p<-.rowSums(p, m= nrow(des), n=length(par))
   expp<-exp(p)
@@ -53,14 +53,14 @@ hessian<-function (par, design, covar, n_alts){
 
 #' Likelihood function
 #'
-#' @param par parameter value(s)
-#' @param design The design matrix
+#' @param par Numeric vector with parametervalues.
+#' @param des A design matrix in which each row is a profile.
 #' @param n_alts The number of alternatives in each choice set
-#' @param Y the response vector
+#' @param Y A binary response vector.
 #' @return the likelihood
-Lik<-function(par, design, n_alts, Y){
+Lik<-function(par, des, n_alts, Y){
 
-  des<-as.matrix(design)
+  des<-as.matrix(des)
 
   p<-t(t(des) * par)
   p<-.rowSums(p, m= nrow(des), n=length(par))
@@ -76,15 +76,15 @@ Lik<-function(par, design, n_alts, Y){
 
 #' Density multivariate t-distribution
 #'
-#' @param par vector with parametervalues.
-#' @param g_mode vector containing the mode of the multivariate t-distribution.
+#' @param par Numeric vector with parametervalues.
+#' @param g_mean vector containing the mean of the multivariate t-distribution.
 #' @param g_covar covariance matrix of the multivariate t-distribution.
 #' @return density
-g_dens<-function (par, g_mode, g_covar){
+g_dens<-function (par, g_mean, g_covar){
 
-  df=length(g_mode)
+  df=length(g_mean)
   n<-length(par)
-  dif<-g_mode-par
+  dif<-g_mean-par
   invcov<-solve(g_covar)
   differ<-as.numeric(t(dif)%*% invcov %*% dif)
 
@@ -99,26 +99,26 @@ g_dens<-function (par, g_mode, g_covar){
 #' a normal distribution.
 #' @param prior_mean Numeric vector which is the mean of the multivariate normal distribution (prior).
 #' @param prior_covar A matrix, the covariance matrix of the multivariate normal distribution (prior).
-#' @param design A design matrix in which each row is a profile.
+#' @param des A design matrix in which each row is a profile.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param Y A binary response vector.
 #' @param m Numeric value. Number of samples = base^m.
 #' @param b Numeric value indicating the base (default = 2).
-#' @return A list containing samples and their associated weights, which together represent the posterior distribution.
+#' @return A list containing samples, their associated weights, the maximum likelihood estimates and the estimated covariance matrix.
 #' @export
-imp_sampling <- function (prior_mean, prior_covar, design,  n_alts, Y, m, b=2, ...){
+imp_sampling <- function (prior_mean, prior_covar, des,  n_alts, Y, m, b=2, ...){
 
   #cte
   prior1<-(2*pi)^(-length(mode)/2)*(det(prior_covar))^(-0.5)
 
-  #estimate importance mode
-  imp_mode<-maxLik::maxNR(logPost, start= prior_mean, prior_mean = prior_mean, prior_covar= prior_covar,
-                          design = design, Y=Y, n_alts=n_alts)$estimate
+  #estimate importance mean
+  maxest<-maxLik::maxNR(logPost, start= prior_mean, prior_mean = prior_mean, prior_covar= prior_covar,
+                          des = des, Y=Y, n_alts=n_alts)$estimate
 
   #draws from importance density
-  H<-hessian(par = imp_mode, design = design, covar = prior_covar, n_alts = n_alts)
+  H<-hessian(par = maxest, des = des, covar = prior_covar, n_alts = n_alts)
   g_covar<--solve(H)
-  g_draws<-lattice_mvt(mean=imp_mode, cvar = g_covar, df=length(imp_mode), m=m, ...)
+  g_draws<-lattice_mvt(mean=maxest, cvar = g_covar, df=length(maxest), m=m, ...)
 
   #vectors
   prior=LK=dens_g=weights<- numeric(nrow(g_draws))
@@ -128,9 +128,9 @@ imp_sampling <- function (prior_mean, prior_covar, design,  n_alts, Y, m, b=2, .
     #prior
     prior[r]<-prior1*exp(-0.5* (g_draws[r, ]-prior_mean) %*% solve(prior_covar) %*% as.matrix(g_draws[r, ]- prior_mean))
     #likelihood
-    LK[r]<-Lik(par = g_draws[r, ], design = design, Y=Y, n_alts = n_alts)
+    LK[r]<-Lik(par = g_draws[r, ], des = des, Y=Y, n_alts = n_alts)
     #density of g
-    dens_g[r]<-g_dens(par = g_draws[r, ], g_mode = imp_mode, g_covar = g_covar)
+    dens_g[r]<-g_dens(par = g_draws[r, ], g_mean = maxest, g_covar = g_covar)
 
   }
 
@@ -138,7 +138,7 @@ imp_sampling <- function (prior_mean, prior_covar, design,  n_alts, Y, m, b=2, .
   w<-LK*prior/dens_g
   w<-w/sum(w)
 
-  return(list(g_draws, w, imp_mode, g_covar))
+  return(list(g_draws, w, maxest, g_covar))
 }
 
 

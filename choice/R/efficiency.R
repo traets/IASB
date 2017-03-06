@@ -3,11 +3,11 @@
 #'
 #' Function to calculate d error given a design, and parameter values.
 #' @param par Vector containing parameter values.
-#' @param design Design matrix.
+#' @param des A design matrix in which each row is a profile.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @return D-error.
 #' @export
-d_err<-function (par, design, n_alts){
+d_err<-function (par, des, n_alts){
 
   des<-as.matrix(design)
 
@@ -48,11 +48,11 @@ info_set<-function (par, c_set){
 #'
 #' Returns the Fisher Information of a design, given parameter values
 #' @param par A vector containing the parameter values
-#' @param design A design matrix. Each row is a profile, successive rows form choice sets.
+#' @param des A design matrix in which each row is a profile.
 #' @return Fisher Information matrix.
-info_design<-function (par, design, n_alts){
+info_design<-function (par, des, n_alts){
 
-  des<-as.matrix(design)
+  des<-as.matrix(des)
   group<-rep(seq(1, nrow(des)/n_alts, 1), each = n_alts)
 
   p<- des %*% diag(par)
@@ -107,7 +107,7 @@ KL_info<-function (fp, fcomb, par_samples, weights, n_alts, print=FALSE){
 }
 
 
-
+#roxygen2::roxygenise()
 
 
 

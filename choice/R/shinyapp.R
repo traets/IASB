@@ -4,6 +4,7 @@
 #' @param set A numeric matrix which represents a choice set. Each row is a profile.
 #' @param lvl_names A list containing the values of each level of each attribute.
 #' @param coding Type of coding used in the given set. See ?contrasts for more info.
+#' @param intercept Logical argument indicating whether an intercept is included. The default is False.
 #' @return A character matrix which represents the choice set.
 #' @export
 present<-function (set, lvl_names, coding, intercept= FALSE) {
@@ -14,7 +15,7 @@ present<-function (set, lvl_names, coding, intercept= FALSE) {
   for (i in 1:n_att){ lvls[i]<-length(lvl_names[[i]]) }
 
   D<-profiles(lvls = lvls, coding = coding, intercept = intercept)[[1]]
-  DC<-profiles(lvls = lvls, coding = coding, intercept= intercept)[[2]]
+  DC<-profiles(lvls = lvls, coding = coding, intercept = intercept)[[2]]
 
   MC<-matrix(data = NA, nrow = n_alts, ncol = n_att)
 
@@ -37,10 +38,10 @@ present<-function (set, lvl_names, coding, intercept= FALSE) {
 
 #' Transform responses
 #'
-#' Transforms input responses to binary response vector
+#' Transforms character input responses to binary response vector.
 #' @param resp String vector containing input responses
 #' @param resp_options String vector containing all possible responses.
-#' The response options should be specified in increasing order, starting with (if included), the neutral response.
+#' The response options should be specified in increasing order, starting with the neutral response (if included).
 #' @param n_alts The number of alternatives per choice set.
 #' @param neutral Logical value indicating whether a neutral option is provided or not. Default = TRUE.
 #' @return A binary response vector.
@@ -84,12 +85,12 @@ map_resp<-function(resp, resp_options, n_alts, neutral=T){
 #' Save to dropbox
 #'
 #' Save design and responses to dropbox map
-#' @param d Matrix containing the design.
+#' @param des A design matrix in which each row is a profile.
 #' @param Y A response vector.
 #' @export
-savedrop <- function(d, Y, dir, filename) {
+savedrop <- function(des, Y, dir, filename) {
 
-  data<-cbind(d, Y)
+  data<-cbind(des, Y)
   fileName <- sprintf("%s.csv", filename )
   filePath <- file.path(tempdir(), fileName)
   write.csv(data, filePath, row.names = FALSE, quote = TRUE)
@@ -97,7 +98,7 @@ savedrop <- function(d, Y, dir, filename) {
   drop_upload(filePath, dest = dir)
 }
 
-#' Binary to discrete matrix
+#' Binary to discrete response matrix
 #'
 #' Transforms a matrix with binary choice data for each respondent (columns),
 #' to a matrix with discrete values representing the choices.

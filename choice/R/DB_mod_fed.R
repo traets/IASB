@@ -92,15 +92,15 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
 #' DB sequential set
 #'
 #' Adds the most DB efficient choice set to a design, given (updated) parameter values.
-#' @param design A design matrix.
+#' @param des A design matrix in which each row is a profile.
 #' @param lvls A vector which contains for each attribute, the number of levels.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param par_samples A matrix in which each row is a sample from the multivariate prior parameter distribution.
-#' @param weights A vector containing the weights of all the samples.
+#' @param weights A vector containing the weights of the samples.
 #' @param prior_covar covariance matrix of the prior distribution.
 #' @return The most DB efficient choice set
 #' @export
-DB_seq_fed <-function(design, lvls, n_alts, par_samples, weights, prior_covar, ... ){
+DB_seq_fed <-function(des, lvls, n_alts, par_samples, weights, prior_covar, ... ){
 
   #start values
   DB_best<-9999
@@ -119,7 +119,7 @@ DB_seq_fed <-function(design, lvls, n_alts, par_samples, weights, prior_covar, .
     for (s in 1: nrow(par_samples)){
 
       info_s<-info_set(par = par_samples[s, ], c_set= set)
-      info_d<-info_design(par= par_samples[s, ], design = design, n_alts = n_alts)
+      info_d<-info_design(par= par_samples[s, ], des = des, n_alts = n_alts)
       inv_cov_prior<-solve(prior_covar)
 
       DB_error<- DB_error+(det(info_d + info_s + inv_cov_prior)*(-1/ncol(par_samples))*weights[s])
@@ -137,9 +137,9 @@ DB_seq_fed <-function(design, lvls, n_alts, par_samples, weights, prior_covar, .
 #' KL information
 #'
 #' Calculates the Kullback-Leibler divergence for a choice set, given parameter values.
-#' @param Matrix in which each row is an alternative of the choice set.
+#' @param set Numeric matrix in which each row is a profile.
 #' @param par_samples A matrix in which each row is a sample.
-#' @param weights A vector containing the weights of all the samples.
+#' @param weights A vector containing the weights of the samples.
 #' @return The Kullback-Leibler divergence
 KL <- function (set, par_samples, weights){
 
@@ -169,8 +169,6 @@ KL <- function (set, par_samples, weights){
   return (as.numeric(klinfo))
 }
 
-
-
 #' KL set selecting
 #'
 #' Provides the set that maximizes the Kullback-Leibler divergence, given parameter values.
@@ -178,7 +176,7 @@ KL <- function (set, par_samples, weights){
 #' @param n_sets Numeric value indicating the number of choice sets.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param par_samples A matrix in which each row is a sample.
-#' @param weights A vector containing the weights of all the samples.
+#' @param weights A vector containing the weights of the samples.
 #' @return The most efficient choice set
 #' @export
 KL_select <- function(lvls, n_sets, n_alts, par_samples, weights){
@@ -217,8 +215,7 @@ KL_select <- function(lvls, n_sets, n_alts, par_samples, weights){
 
 
 
-
-
+#roxygen2::roxygenise()
 
 
 

@@ -4,10 +4,10 @@
 \alias{DB_seq_fed}
 \title{DB sequential set}
 \usage{
-DB_seq_fed(design, lvls, n_alts, par_samples, weights, prior_covar, ...)
+DB_seq_fed(des, lvls, n_alts, par_samples, weights, prior_covar, ...)
 }
 \arguments{
-\item{design}{A design matrix.}
+\item{des}{A design matrix in which each row is a profile.}
 
 \item{lvls}{A vector which contains for each attribute, the number of levels.}
 
@@ -15,7 +15,7 @@ DB_seq_fed(design, lvls, n_alts, par_samples, weights, prior_covar, ...)
 
 \item{par_samples}{A matrix in which each row is a sample from the multivariate prior parameter distribution.}
 
-\item{weights}{A vector containing the weights of all the samples.}
+\item{weights}{A vector containing the weights of the samples.}
 
 \item{prior_covar}{covariance matrix of the prior distribution.}
 }

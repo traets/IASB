@@ -53,14 +53,14 @@ design.gen<-function (lvls, n_sets, n_alts, coding, intercept=FALSE){
 #'
 #' Function to generate responses given parameter values and a design matrix. Chooses the alternative with max probability.
 #' @param par Vector containing parameter values.
-#' @param design Design matrix.
-#' @param bin Indicates whether the returned value should be a binary vector or just the number of the chosen set.
-#' @return Vector with binary responses.
+#' @param set A numeric matrix which represents a choice set. Each row is a profile.
+#' @param bin Indicates whether the returned value should be a binary vector or a discrete value which denotes the chosen alternative.
+#' @return Binary response vector or discrete value indicating the choosing alternative.
 #' @export
-respond<-function (par, design, n_alts, bin=TRUE){
+respond<-function (par, set, n_alts, bin=TRUE){
 
   par<-as.matrix(par)
-  d <- as.matrix(design)
+  d <- as.matrix(set)
 
   #prob
   U <- d %*% t(par)
