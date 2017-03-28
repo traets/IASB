@@ -4,7 +4,8 @@
 \alias{DB_seq_fed}
 \title{DB sequential set}
 \usage{
-DB_seq_fed(des, lvls, n_alts, par_samples, weights, prior_covar, ...)
+DB_seq_fed(des, lvls, n_alts, par_samples, weights, prior_covar, coding,
+  intercept = FALSE, mindiff = 0)
 }
 \arguments{
 \item{des}{A design matrix in which each row is a profile.}
@@ -18,6 +19,12 @@ DB_seq_fed(des, lvls, n_alts, par_samples, weights, prior_covar, ...)
 \item{weights}{A vector containing the weights of the samples.}
 
 \item{prior_covar}{covariance matrix of the prior distribution.}
+
+\item{coding}{Type op coding that need to be used. See ?contrasts for more information.}
+
+\item{intercept}{Logical argument indicating whether an intercept should be included. The default is False.}
+
+\item{mindiff}{The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.}
 }
 \value{
 The most DB efficient choice set

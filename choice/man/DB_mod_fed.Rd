@@ -4,7 +4,8 @@
 \alias{DB_mod_fed}
 \title{DB modified federov algorithm}
 \usage{
-DB_mod_fed(lvls, n_sets, n_alts, par_samples, max_iter = Inf, ...)
+DB_mod_fed(lvls, n_sets, n_alts, par_samples, coding, intercept = FALSE,
+  max_iter = Inf)
 }
 \arguments{
 \item{lvls}{A vector which contains for each attribute, the number of levels.}
@@ -14,6 +15,10 @@ DB_mod_fed(lvls, n_sets, n_alts, par_samples, max_iter = Inf, ...)
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 
 \item{par_samples}{A matrix in which each row is a sample from the multivariate prior parameter distribution.}
+
+\item{coding}{Type op coding that need to be used. See ?contrasts for more information.}
+
+\item{intercept}{Logical argument indicating whether an intercept should be included. The default is False.}
 
 \item{max_iter}{A numeric value indicating the maximum number allowed iterations.}
 }
