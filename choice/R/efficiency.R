@@ -7,22 +7,12 @@
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @return D-error.
 #' @export
-d_err<-function (par, des, n_alts){
+d_err<-function (par, des, n_alts) {
 
-  des<-as.matrix(des)
+  infoM_des<-info_design(par,des,n_alts)
+  derr <- det(infoM_des)^(-1/length(par))
 
-  n_sets<-nrow(des)/n_alts
-  group<-rep(seq(1, nrow(des)/n_alts, 1), each=n_alts)
-
-  #probability
-  p<-des %*% diag(par)
-  p<-.rowSums(p,m= n_sets*n_alts,n=length(par))
-  p<-exp(p)/rep(rowsum(exp(p),group), each=n_alts)
-
-  infoM_des<- crossprod(des*p, des) - crossprod(rowsum(des*p, group))
-  derr<- det(infoM_des)^(-1/length(par))
-
-  return (derr)
+  return(derr)
 }
 
 
