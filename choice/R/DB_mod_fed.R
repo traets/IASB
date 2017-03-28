@@ -12,78 +12,49 @@
 #' @param max_iter A numeric value indicating the maximum number allowed iterations.
 #' @return An efficient design, and the associated DB error.
 #' @export
-DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
+DB_mod_fed<-function (lvls, n_sets, n_alts, par_samples, coding, intercept=FALSE, max_iter = Inf)
+{
 
-  #Generation
-  profiles<- profiles(lvls, ...)
-  des<- design.gen(lvls = lvls, n_sets, n_alts)
+  profiles <- profiles(lvls, coding, intercept= intercept)[[2]]
+  des <- design.gen(lvls, n_sets, n_alts, coding, intercept = intercept)
 
-  #check
-  if(ncol(des)!= ncol(par_samples)){
-    stop('Number of paramters does not match the design matrix')
+  if (ncol(des) != ncol(par_samples)) {
+    stop("Number of paramters does not match the design matrix")
   }
-
-  if((nrow(des)/n_alts)%%1!=0){
-    stop('number of alternatives per choice set does not match the design')
+  if ((nrow(des)/n_alts)%%1 != 0) {
+    stop("number of alternatives per choice set does not match the design")
   }
-
-
-  #start value
   DB_start <- 99999
   converge <- FALSE
   it <- 1
-
-  while (!converge & it<=max_iter){
-
-    it <- it+1
-    #Progress bar
+  while (!converge & it <= max_iter) {
+    it <- it + 1
     pb <- txtProgressBar(min = 0, max = nrow(des), style = 3)
+    iter_des <- des
+    for (trow in 1:nrow(des)) {
+      for (cand in 1:nrow(profiles)) {
+        des[trow, ] <- profiles[cand, ]
+        D_errors <- apply(par_samples, 1, d_err, des = des,  n_alts = n_alts)
 
-    #set iteration start design
-    iter_des<-des
-
-    for (trow in 1:nrow(des)){
-
-      for (cand in 1:nrow(profiles)){
-
-        #Change alternative
-        des[trow, ]<- profiles[cand, ]
-
-        #calculate for all samples the D error.
-        D_errors<-apply(par_samples, 1, d_err, design = des, n_alts = n_alts)
-
-        #warning
-        if (any(is.na(D_errors))){warning('NaN produced in DB error')}
-
-        #DB error
-        DB<-mean(D_errors, na.rm = TRUE)
-
-        #if better --> keep
-        if (DB < DB_start){
-          best_row<- as.numeric(des[trow, ])
-          DB_start<-DB
-          change<-T
+        if (any(is.na(D_errors))) {
+          warning("NaN produced in DB error")
         }
-
-        # update progress bar
+        DB <- mean(D_errors, na.rm = TRUE)
+        if (DB < DB_start) {
+          best_row <- as.numeric(des[trow, ])
+          DB_start <- DB
+          change <- T
+        }
         setTxtProgressBar(pb, trow)
-
       }
-      # Changes after loop through one row
-      if (change){
-        des[trow, ] <- best_row
-      }else{
-        des[trow, ] <- iter_des[trow, ]
-      }
+      if (change) {des[trow, ] <- best_row
+      }else {des[trow, ] <- iter_des[trow, ]}
 
-      change<-F
+      change <- F
     }
-
-    #Changes after loop through whole design
     close(pb)
-    converge<-isTRUE(all.equal(des, iter_des))
+    converge <- isTRUE(all.equal(des, iter_des))
   }
-
   return(list(des, DB))
 }
 
