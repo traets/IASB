@@ -65,7 +65,6 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
           change<-T
         }
 
-        Sys.sleep(0.1)
         # update progress bar
         setTxtProgressBar(pb, trow)
 
@@ -98,15 +97,17 @@ DB_mod_fed <- function(lvls, n_sets, n_alts, par_samples, max_iter=Inf, ...){
 #' @param par_samples A matrix in which each row is a sample from the multivariate prior parameter distribution.
 #' @param weights A vector containing the weights of the samples.
 #' @param prior_covar covariance matrix of the prior distribution.
+#' @param coding Type op coding that need to be used. See ?contrasts for more information.
+#' @param intercept Logical argument indicating whether an intercept should be included. The default is False.
+#' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.
 #' @return The most DB efficient choice set
 #' @export
-DB_seq_fed <-function(des, lvls, n_alts, par_samples, weights, prior_covar, ... ){
+DB_seq_fed <-function(des, lvls, n_alts, par_samples, weights, prior_covar, coding, intercept= FALSE, mindiff=0){
 
   #start values
-  DB_best<-9999
-  candis<-profiles(lvls, ...)
-  full_comb<- full_sets(cand = candis, n_alts = n_alts)
-
+  DB_best<-10000
+  candis<-profiles(lvls, coding, intercept)[[1]]
+  full_comb<- full_sets(lvls, n_alts, coding, intercept, mindiff)
 
   #for each potential set:
   for (p in 1:nrow(candis)){
