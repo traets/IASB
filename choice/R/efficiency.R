@@ -9,7 +9,7 @@
 #' @export
 d_err<-function (par, des, n_alts){
 
-  des<-as.matrix(design)
+  des<-as.matrix(des)
 
   n_sets<-nrow(des)/n_alts
   group<-rep(seq(1, nrow(des)/n_alts, 1), each=n_alts)
