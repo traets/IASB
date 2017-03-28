@@ -106,7 +106,7 @@ DB_seq_fed <-function(des, lvls, n_alts, par_samples, weights, prior_covar, codi
 
   #start values
   DB_best<-10000
-  candis<-profiles(lvls, coding, intercept)[[1]]
+  candis<-profiles(lvls, coding, intercept)[[2]]
   full_comb<- full_sets(lvls, n_alts, coding, intercept, mindiff)
 
   #for each potential set:
