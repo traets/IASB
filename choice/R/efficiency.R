@@ -39,6 +39,7 @@ info_set<-function (par, c_set){
 #' Returns the Fisher Information of a design, given parameter values
 #' @param par A vector containing the parameter values
 #' @param des A design matrix in which each row is a profile.
+#' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @return Fisher Information matrix.
 info_design<-function (par, des, n_alts){
 

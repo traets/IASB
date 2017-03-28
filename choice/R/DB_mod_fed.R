@@ -9,6 +9,8 @@
 #' @param n_sets Numeric value indicating the number of choice sets.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param par_samples A matrix in which each row is a sample from the multivariate prior parameter distribution.
+#' @param coding Type op coding that need to be used. See ?contrasts for more information.
+#' @param intercept Logical argument indicating whether an intercept should be included. The default is False.
 #' @param max_iter A numeric value indicating the maximum number allowed iterations.
 #' @return An efficient design, and the associated DB error.
 #' @export
