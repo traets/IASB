@@ -71,7 +71,7 @@ map_resp<-function(resp, resp_options, n_alts, neutral=T){
 #'@param inputDir A dropbox directory that contains the design.
 #'@return the file in that directory (or concatenated files).
 #'@export
- loaddrop <- function(dir) {
+loaddrop <- function(dir) {
 
   filesInfo <- drop_dir(dir)
   filePaths <- filesInfo$path
