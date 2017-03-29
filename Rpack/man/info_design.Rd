@@ -10,6 +10,8 @@ info_design(par, des, n_alts)
 \item{par}{A vector containing the parameter values}
 
 \item{des}{A design matrix in which each row is a profile.}
+
+\item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 }
 \value{
 Fisher Information matrix.
