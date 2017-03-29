@@ -1,4 +1,4 @@
-Package: choice
+Package: IASB
 Type: Package
 Title: Efficient designs for discrete choice experiments.
 Version: 0.1.0
@@ -10,4 +10,4 @@ Imports:
     dplyr,
     maxLik
 RoxygenNote: 5.0.1
-URL: https://github.com/traets/choice
+URL: https://github.com/traets/IASB/Rpack
