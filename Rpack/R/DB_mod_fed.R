@@ -39,7 +39,10 @@ DB_mod_fed<-function (lvls, n_sets, n_alts, par_samples, coding, intercept=FALSE
         D_errors <- apply(par_samples, 1, d_err, des = des,  n_alts = n_alts)
 
         if (any(is.na(D_errors))) {
-          warning("NaN produced in DB error")
+          warning("NaN produced in DB error. Possibly too little choice sets.")
+        }
+        if (any(is.infinite(D_errors))) {
+          warning("Infinite D-error values. Possibly too little choice sets.")
         }
         DB <- mean(D_errors, na.rm = TRUE)
         if (DB < DB_start) {
