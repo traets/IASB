@@ -5,20 +5,17 @@
 #' Modified federov algorithm. Swipes every profile of an initial design with candidate profiles.
 #' By doing this it tries to minimize the DB error. The DB error is te mean D-error over samples
 #' from the prior parameter distribution.
-#' @param lvls A vector which contains for each attribute, the number of levels.
+#' @param candset A numeric matrix in which each row is a possible profile.
 #' @param n_sets Numeric value indicating the number of choice sets.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
 #' @param par_samples A matrix in which each row is a sample from the multivariate prior parameter distribution.
-#' @param coding Type op coding that need to be used. See ?contrasts for more information.
-#' @param intercept Logical argument indicating whether an intercept should be included. The default is False.
 #' @param max_iter A numeric value indicating the maximum number allowed iterations.
-#' @return An efficient design, and the associated DB error.
+#' @return An efficient design, and the associated DB-error.
 #' @export
-DB_mod_fed<-function (lvls, n_sets, n_alts, par_samples, coding, intercept=FALSE, max_iter = Inf)
-{
+modfed.db<-function (candset, n_sets, n_alts, par_samples, max_iter = Inf){
 
-  profiles <- profiles(lvls, coding, intercept= intercept)[[2]]
-  des <- design.gen(lvls, n_sets, n_alts, coding, intercept = intercept)
+  R<-round(runif((n_sets*n_alts), 1, nrow(candset)))
+  des<-data.matrix(candset[R,])
 
   if (ncol(des) != ncol(par_samples)) {
     stop("Number of paramters does not match the design matrix")
@@ -33,9 +30,9 @@ DB_mod_fed<-function (lvls, n_sets, n_alts, par_samples, coding, intercept=FALSE
     it <- it + 1
     pb <- txtProgressBar(min = 0, max = nrow(des), style = 3)
     iter_des <- des
-    for (trow in 1:nrow(des)) {
-      for (cand in 1:nrow(profiles)) {
-        des[trow, ] <- profiles[cand, ]
+    for (r in 1:nrow(des)) {
+      for (c in 1:nrow(candset)) {
+        des[r, ] <- candset[c, ]
         D_errors <- apply(par_samples, 1, d_err, des = des,  n_alts = n_alts)
 
         if (any(is.na(D_errors))) {
@@ -46,14 +43,14 @@ DB_mod_fed<-function (lvls, n_sets, n_alts, par_samples, coding, intercept=FALSE
         }
         DB <- mean(D_errors, na.rm = TRUE)
         if (DB < DB_start) {
-          best_row <- as.numeric(des[trow, ])
+          best_row <- as.numeric(des[r, ])
           DB_start <- DB
           change <- T
         }
-        setTxtProgressBar(pb, trow)
+        setTxtProgressBar(pb, r)
       }
-      if (change) {des[trow, ] <- best_row
-      }else {des[trow, ] <- iter_des[trow, ]}
+      if (change) {des[r, ] <- best_row
+      }else {des[r, ] <- iter_des[r, ]}
 
       change <- F
     }
