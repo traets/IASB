@@ -12,10 +12,9 @@ full_sets(candset, n_alts)
 \item{n_alts}{Numeric value indicating the number of alternatives per choice set.}
 }
 \value{
-Matrix with all possible combinations of profiles.
+Matrix with all possible combinations of profiles (choice sets).
 }
 \description{
-Generates all possible combinations of choice sets,
-taking into account the minimum ammount of attributelevels that need to be different per choice set.
+Generates all possible combinations of choice sets.
 }
 
