@@ -165,25 +165,32 @@ lattice_mvn<-function (mean, cvar, m, b=2) {
 
 #' All choice sets
 #'
-#' Generates all possible combinations of choice sets,
-#' taking into account the minimum ammount of attributelevels that need to be different per choice set.
-#' @param lvls A vector which contains for each attribute, the number of levels.
+#' Generates all possible combinations of choice sets.
+#' @param candset A numeric matrix in which each row is a possible profile.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
-#' @param coding Type op coding that need to be used. See ?contrasts for more information.
-#' @param intercept logical value indicating whether an intercept should be present.
-#' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.
-#' @return Matrix with all possible combinations of profiles, taking into account the mindiff constraint.
+#' @return Matrix with all possible combinations of profiles (choice sets).
 #' @export
-full_sets<- function(lvls, n_alts, coding, intercept= F, mindiff= 0){
+full_sets<- function(candset, n_alts){
 
-  cand<-profiles(lvls = lvls, coding = coding)[[2]]
   fun<-function(x){return(1:x)}
-  N<- nrow(cand)
 
-  s1<-rep(N, n_alts)
-  s2<-as.list(s1)
-  s3<-lapply(X = s2, fun)
-  fcomb<-as.data.frame(expand.grid(s3))
+  s1<-as.list(rep(nrow(candset), n_alts))
+  s2<-lapply(X = s1, fun)
+  fc<-as.data.frame(expand.grid(s2))
+
+  return(fc)
+}
+
+
+#' Minimum difference choice sets
+#'
+#' Filters all possible combinations of choice sets,
+#' taking into account the minimum ammount of attributelevels that need to be different per choice set.
+#' @param candset A numeric matrix in which each row is a possible profile.
+#' @param fcomb A matrix with all possible combinations of profiles (choice sets).
+#' @return Matrix with all possible combinations of profiles, taking into account the minimum difference between profiles per choice set.
+#' @export
+mindiff<-function(candset,fcomb,lvls, mindiff){
 
   parplace<-lvls-1
   par2<-cumsum(parplace)
@@ -191,22 +198,23 @@ full_sets<- function(lvls, n_alts, coding, intercept= F, mindiff= 0){
   par1<-par1[-length(par1)]
   diff<-numeric()
   newfcomb<-numeric()
-
+  cand<-candset
 
   for (s in 1:nrow(fcomb)){
 
     set <- cand[as.numeric(fcomb[s,]), ]
 
     for (pp in 1:length(par1)){
-    ifelse((sum(abs(diff(set[ , par1[pp] :par2[pp]],1))) !=0), dif<-1, dif<-0)
-    diff<-c(diff,dif)
+      ifelse((sum(abs(diff(set[ , par1[pp] :par2[pp]],1))) !=0), dif<-1, dif<-0)
+      diff<-c(diff,dif)
     }
 
     if (sum(diff) > mindiff){newfcomb<-rbind(newfcomb, fcomb[s, ])}
     diff<-numeric(0)
-    }
+  }
 
-    return(newfcomb)
+  return(newfcomb)
+
 }
 
 
