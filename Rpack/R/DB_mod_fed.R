@@ -65,27 +65,23 @@ modfed.db<-function (candset, n_sets, n_alts, par_samples, max_iter = Inf){
 #'
 #' Adds the most DB efficient choice set to a design, given (updated) parameter values.
 #' @param des A design matrix in which each row is a profile.
-#' @param lvls A vector which contains for each attribute, the number of levels.
+#' @param candset A numeric matrix in which each row is a possible profile.
 #' @param n_alts Numeric value indicating the number of alternatives per choice set.
-#' @param par_samples A matrix in which each row is a sample from the multivariate prior parameter distribution.
+#' @param par_samples A matrix in which each row is a sample from the multivariate parameter distribution.
 #' @param weights A vector containing the weights of the samples.
-#' @param prior_covar covariance matrix of the prior distribution.
-#' @param coding Type op coding that need to be used. See ?contrasts for more information.
-#' @param intercept Logical argument indicating whether an intercept should be included. The default is False.
-#' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.
-#' @return The most DB efficient choice set
+#' @param prior_covar Covariance matrix of the prior distribution.
+#' @return The most DB efficient choice set.
 #' @export
-seqfed.db <-function(des, lvls, n_alts, par_samples, weights, prior_covar, coding, intercept= FALSE, mindiff=0){
+seqfed.db <-function(des, candset, n_alts, par_samples, weights, prior_covar){
 
   #start values
-  DB_best<-10000
-  candis<-profiles(lvls, coding, intercept)[[2]]
-  full_comb<- full_sets(lvls, n_alts, coding, intercept, mindiff)
+  DB_best<-1000
+  full_comb<- full_sets(candset, n_alts)
 
   #for each potential set:
-  for (p in 1:nrow(candis)){
+  for (p in 1:nrow(candset)){
 
-    set<-as.matrix(candis[as.numeric(full_comb[p, ]), ])
+    set<-as.matrix(candset[as.numeric(full_comb[p, ]), ])
 
     #for each par draw calculate d-error:
     DB_error<-0
@@ -185,8 +181,6 @@ KL_select <- function(lvls, n_sets, n_alts, par_samples, weights){
 
   return(list(best_set, kl_start))
 }
-
-
 
 
 #roxygen2::roxygenise()
