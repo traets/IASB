@@ -75,7 +75,7 @@ modfed.db<-function (candset, n_sets, n_alts, par_samples, max_iter = Inf){
 #' @param mindiff The minimal number of atrribute levels that needs to be different in a choice set. Default = 0.
 #' @return The most DB efficient choice set
 #' @export
-DB_seq_fed <-function(des, lvls, n_alts, par_samples, weights, prior_covar, coding, intercept= FALSE, mindiff=0){
+seqfed.db <-function(des, lvls, n_alts, par_samples, weights, prior_covar, coding, intercept= FALSE, mindiff=0){
 
   #start values
   DB_best<-10000
