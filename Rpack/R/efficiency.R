@@ -16,24 +16,6 @@ d_err<-function (par, des, n_alts) {
 }
 
 
-#' Fisher Information of choice set
-#'
-#' Return the fisher information matrix of a particular choice set,
-#' given parameter values.
-#' @param par A vector containing the parameter values
-#' @param c_set A matrix representing the choice set. Each row is a profile.
-#' @return Fisher Information matrix
-info_set<-function (par, c_set){
-
-  p<-c_set %*% diag(par)
-  p<-.rowSums(p, m = nrow(c_set), n = length(par))
-  p<-exp(p)/sum(exp(p))
-
-  i_set<-t(c_set) %*% (diag(p) - p %*% t(p)) %*% c_set
-
-  return (i_set)
-}
-
 #' Fisher Information of design
 #'
 #' Returns the Fisher Information of a design, given parameter values
@@ -43,7 +25,6 @@ info_set<-function (par, c_set){
 #' @return Fisher Information matrix.
 info_design<-function (par, des, n_alts){
 
-  des<-as.matrix(des)
   group<-rep(seq(1, nrow(des)/n_alts, 1), each = n_alts)
 
   p<- des %*% diag(par)
