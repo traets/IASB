@@ -14,6 +14,7 @@
 #' @export
 modfed.db<-function (candset, n_sets, n_alts, par_samples, max_iter = Inf){
 
+  #random start des
   R<-round(runif((n_sets*n_alts), 1, nrow(candset)))
   des<-data.matrix(candset[R,])
 
@@ -23,13 +24,16 @@ modfed.db<-function (candset, n_sets, n_alts, par_samples, max_iter = Inf){
   if ((nrow(des)/n_alts)%%1 != 0) {
     stop("number of alternatives per choice set does not match the design")
   }
+
   DB_start <- 99999
   converge <- FALSE
   it <- 1
+
   while (!converge & it <= max_iter) {
     it <- it + 1
     pb <- txtProgressBar(min = 0, max = nrow(des), style = 3)
     iter_des <- des
+
     for (r in 1:nrow(des)) {
       for (c in 1:nrow(candset)) {
         des[r, ] <- candset[c, ]
@@ -49,6 +53,7 @@ modfed.db<-function (candset, n_sets, n_alts, par_samples, max_iter = Inf){
         }
         setTxtProgressBar(pb, r)
       }
+
       if (change) {des[r, ] <- best_row
       }else {des[r, ] <- iter_des[r, ]}
 
@@ -183,7 +188,7 @@ KL_select <- function(lvls, n_sets, n_alts, par_samples, weights){
 }
 
 
-#roxygen2::roxygenise()
+roxygen2::roxygenise()
 
 
 
