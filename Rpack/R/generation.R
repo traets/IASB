@@ -36,17 +36,17 @@ profiles<- function (lvls, coding, intercept = FALSE) {
 #' @param intercept Logical argument indicating whether an intercept should be included. The default is False.
 #' @return A design matrix
 #' @export
-design.gen<-function (lvls, n_sets, n_alts, coding, intercept=FALSE){
+rdes<-function (lvls, n_sets, n_alts, coding, intercept=FALSE){
 
 
   profs<-profiles(lvls = lvls, coding = coding, intercept = intercept)[[2]]
 
   R<-round(runif((n_alts*n_sets), 1, nrow(profs)))
-  design<-profs[R,]
-  design<-as.matrix(design)
+  des<-profs[R,]
+  des<-as.matrix(des)
 
   #return design
-  return(design)
+  return(des)
 }
 
 #' Lattice multivariate standard normal distribution.
