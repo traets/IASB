@@ -88,7 +88,7 @@ seqfed.db <-function(des, candset, n_alts, par_samples, weights, prior_covar){
 
     for (s in 1: nrow(par_samples)){
 
-      info_s<-info_set(par = par_samples[s, ], c_set= set)
+      info_s<-info_design(par = par_samples[s, ], des = set, n_alts = n_alts)
       info_d<-info_design(par= par_samples[s, ], des = des, n_alts = n_alts)
       inv_cov_prior<-solve(prior_covar)
 
