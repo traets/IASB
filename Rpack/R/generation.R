@@ -26,7 +26,7 @@ profiles<- function (lvls, coding, intercept = FALSE) {
   return(list(D, as.matrix(CD)))
 }
 
-#' Design generation
+#' Random design generation
 #'
 #' Function to generate a random design matrix.
 #' @param lvls  A vector which contains for each attribute, the number of levels.
@@ -37,7 +37,6 @@ profiles<- function (lvls, coding, intercept = FALSE) {
 #' @return A design matrix
 #' @export
 rdes<-function (lvls, n_sets, n_alts, coding, intercept=FALSE){
-
 
   profs<-profiles(lvls = lvls, coding = coding, intercept = intercept)[[2]]
 
@@ -217,5 +216,5 @@ mindiff<-function(candset,fcomb,lvls, mindiff){
 
 }
 
-
-#roxygen2::roxygenise()
+roxygen2::roxygenise()
+#install.packages('roxygen2')
