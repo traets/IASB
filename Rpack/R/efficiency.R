@@ -79,7 +79,7 @@ KL_info<-function (fp, fcomb, par_samples, weights, n_alts, print=FALSE){
 }
 
 
-#roxygen2::roxygenise()
+roxygen2::roxygenise()
 
 
 
