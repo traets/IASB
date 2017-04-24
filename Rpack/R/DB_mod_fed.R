@@ -125,8 +125,6 @@ KL <- function (set, par_samples, weights){
   denom<-colSums(nummax)
 
   probs<-sweep(nummax, MARGIN=2, denom, FUN="/")
-
-  probs
   logprobs<-log(probs)
 
   wprob<- sweep(probs, MARGIN=2, weights, FUN="*")
@@ -143,6 +141,7 @@ KL <- function (set, par_samples, weights){
 
   return (as.numeric(klinfo))
 }
+
 
 #' KL set selecting
 #'
@@ -187,8 +186,8 @@ KL_select <- function(lvls, n_sets, n_alts, par_samples, weights){
   return(list(best_set, kl_start))
 }
 
-
-roxygen2::roxygenise()
+#setwd('C:/Users/u0105757/Desktop/Rpack')
+#roxygen2::roxygenise()
 
 
 
